@@ -15,7 +15,6 @@ const env = {
   "APP_IMAGE_WIDTH": "1200",
   "APP_IMAGE_HEIGHT": "630",
   "APP_SITE_NAME": "Inquill",
-  "APP_LOCALE": "en",
 
   "PANEL_BEAR_ID": "",
   

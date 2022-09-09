@@ -16,7 +16,7 @@ const App = ({ Component, pageProps } : AppProps) => {
   const excludeHeader: string[] = []
   const excludeFooter: string[] = []
 
-  usePanelbear(process.env.PANEL_BEAR_ID);
+  usePanelbear(process.env.PANEL_BEAR_ID || '');
 
   return (
     <>

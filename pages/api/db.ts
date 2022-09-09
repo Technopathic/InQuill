@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import type { NextApiRequest, NextApiResponse } from 'next'
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
-import { QuestionData } from './types'
+const supabase = createClient(process.env.SUPABASE_URL || '', process.env.SUPABASE_KEY || '')
+import { QuestionData } from '../../types'
 
 export const getEvents = async () => {
     const { data, error } = await supabase.from('events').select('id, title, slug').eq('archived', false)
