@@ -9,7 +9,7 @@ export const getEvents = async () => {
         return { error: `Unable to fetch events: ${error}` }
     }
 
-    return data[0]
+    return data
 }
 
 export const getEvent = async(slug: string) => {
@@ -27,7 +27,7 @@ export const getSessions = async(slug: string) => {
         return { error: `Unable to fetch sessions: ${JSON.stringify(error)}` }
     }
 
-    return data[0]
+    return data
 }
 
 export const getSession = async(slug: string) => {
@@ -45,7 +45,7 @@ export const getQuestions = async(slug: string) => {
         return { error: `Unable to fetch questions: ${error}` }
     }
 
-    return data[0]
+    return data
 }
 
 export const getQuestion = async(id: number) => {
