@@ -2,6 +2,10 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession, storeQuestion } from './db'
 import { QuestionType } from '../../types'
 
+type ResponseOptions = {
+    body: 'OK'
+}
+
 type ResponseData = {
     question: QuestionType;
 }
@@ -14,8 +18,19 @@ const validateAuthor = (author: string | string[] | undefined) => author && type
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<ResponseData | ResponseError>
+    res: NextApiResponse<ResponseOptions | ResponseData | ResponseError>
 ) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE');
+
+    if(req.method === 'OPTIONS') {
+        return res.status(200).json(({
+            body: 'OK'
+        }))
+    }
+    
     if (req.method !== 'POST') {
         return res.status(401).json({ error: 'Not Allowed' })
     }

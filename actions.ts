@@ -22,11 +22,24 @@ export const getQuestions = async(slug: string) => {
 }
 
 export const storeQuestion = async(sessionSlug: string, content: string, author: string) => {
-    const data = await axios.post(`${process.env.API_URL}/postQuestion` || '', {
+    /*const data = await axios.post(`${process.env.API_URL}/postQuestion` || '', JSON.stringify({
         sessionSlug,
         content,
         author
-    }, {
+    }), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })*/
+
+    const data = await axios({
+        method: 'POST',
+        url: `${process.env.API_URL}/postQuestion` || '',
+        data: JSON.stringify({
+            sessionSlug,
+            content,
+            author
+        }),
         headers: {
             'Content-Type': 'application/json'
         }
