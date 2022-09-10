@@ -1,6 +1,7 @@
 import { useLayoutEffect } from 'react'
 import create from 'zustand'
 import createContext from 'zustand/context'
+import * as actions from './actions'
 
 import * as types from './types'
 
@@ -19,7 +20,8 @@ const initialState: types.State  = {
     event: null,
     sessions: [],
     session: null,
-    questions: []
+    questions: [],
+    error: ''
 }
 
 const context = createContext()
@@ -58,7 +60,7 @@ const reducer = (state: types.State, action: types.Action): types.State => {
         case actionTypes.GET_EVENTS: {
             return {
                 ...state,
-                events: action.value.events
+                events: action.value
             }
         }
 

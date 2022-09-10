@@ -37,6 +37,7 @@ export type State = {
     sessions: SessionType[];
     session: SessionType | null;
     questions: QuestionType[];
+    error: string;
 }
 
 export type ActionType = 'GET_EVENTS' | 'GET_SESSIONS' | 'GET_QUESTIONS' | 'STORE_QUESTION' | 'STORE_QUESTION_VOTE';
@@ -48,4 +49,21 @@ export type Action = {
 
 export type Dispatch = {
     dispatch: (action: Action) => void;
+}
+
+export type EventsPage = {
+    events?: EventType[];
+    error?: string;
+}
+
+export type SessionsPage = {
+    event?: EventType;
+    sessions?: SessionType[];
+    error?: string;
+}
+
+export type QuestionsType = {
+    session?: SessionType;
+    questions?: QuestionType[];
+    error?: string;
 }

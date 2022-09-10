@@ -20,7 +20,7 @@ export default async function handler(
         return res.status(401).json({ error: 'Not Allowed' })
     }
 
-    const { sessionSlug, content, author } = req.query
+    const { sessionSlug, content, author } = req.body
 
     if(
         !sessionSlug || 

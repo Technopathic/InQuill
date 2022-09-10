@@ -17,18 +17,17 @@ export default async function handler(
         return res.status(401).json({ error: 'Not Allowed' })
     }
 
-    const { id } = req.query;
+    const { id } = req.body;
 
-    if(!id || typeof id !== 'string') {
+    if(!id || typeof id !== 'number') {
         return res.status(401).json({
             error: 'Missing question Id.'
         })
     }
 
     const userId = null;
-    const questionId = Number(id);
 
-    const question = await getQuestion(questionId);
+    const question = await getQuestion(id);
     if(question.error) {
         return res.status(500).json({
             error: question.error
@@ -48,7 +47,7 @@ export default async function handler(
         })
     }
 
-    const questionData = await storeQuestionVote(questionId, userId);
+    const questionData = await storeQuestionVote(id, userId);
     if(questionData.error) {
         return res.status(403).json({
             error: questionData.error
