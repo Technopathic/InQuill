@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-const post = (url: string, params: any) => axios.post(url, {...params}).then(res => res.data)
-
 export const getEvents = async() => {
     const data = await axios.get(`${process.env.API_URL}/getEvents`)
     .then(res => res.data)
@@ -24,10 +22,14 @@ export const getQuestions = async(slug: string) => {
 }
 
 export const storeQuestion = async(sessionSlug: string, content: string, author: string) => {
-    const data = await post(`${process.env.API_URL}/postQuestion` || '', {
+    const data = await axios.post(`${process.env.API_URL}/postQuestion` || '', {
         sessionSlug,
         content,
         author
+    }, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
     .then(res => res.data)
 
@@ -35,8 +37,12 @@ export const storeQuestion = async(sessionSlug: string, content: string, author:
 }
 
 export const storeQuestionVote = async(id: number) => {
-    const data = await post(`${process.env.API_URL}/postQuestionVote` || '', {
+    const data = await axios.post(`${process.env.API_URL}/postQuestionVote` || '', {
         id
+    }, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
     .then(res => res.data)
 

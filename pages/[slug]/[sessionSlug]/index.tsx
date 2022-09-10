@@ -6,6 +6,8 @@ import { useStore } from '../../../store'
 import * as types from '../../../types'
 import { getQuestions, storeQuestion, storeQuestionVote } from '../../../actions'
 
+import { FiChevronUp } from "react-icons/fi";
+
 const Questions: NextPage<types.QuestionsPage> = (props) => {
   const router = useRouter()
   const { sessionSlug } = router.query
@@ -51,15 +53,17 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       <main className="flex flex-col flex-grow items-center pb-8">
         <section className="w-full max-w-screen-sm">
           {questions.map((question, i) => (
-            <article key={i} className="flex bg-white rounded-xl mt-8">
-                <div className="flex flex-col">
-                    <div></div>
-                    <p>{question.votes}</p>
+            <article key={i} className="flex bg-white rounded-xl mt-8 p-4">
+                <div className="flex flex-col items-center pr-4">
+                    <div className="cursor-pointer">
+                      <FiChevronUp size={32} />
+                    </div>
+                    <p className="text-2xl mb-2">{question.votes}</p>
                     <span>Votes</span>
                 </div>
-                <div className="p-6">
-                <span className="text-sm">{question.author}</span>
-                <p className="text-xl my-1">{question.content}</p>
+                <div>
+                  <span className="text-sm">{question.author}</span>
+                  <p className="text-xl my-1">{question.content}</p>
                 </div>
             </article>
           ))}
