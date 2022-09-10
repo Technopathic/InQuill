@@ -66,7 +66,7 @@ export default async function handler(
     const currentTime = new Date().getTime()
     const startTime = new Date(session.start_at).getTime()
     const endTime = new Date(session.end_at).getTime()
-    
+
     if(startTime > currentTime) {
         return res.status(403).json({
             error: 'Question and Answer has not begin yet.'
@@ -88,7 +88,7 @@ export default async function handler(
 
     const question = await storeQuestion(questionData);
     if(question.error) {
-        res.status(500).json({
+        return res.status(500).json({
             error: question.error
         })
     }
