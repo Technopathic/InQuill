@@ -63,14 +63,17 @@ export default async function handler(
         })
     }
 
-    const currentTime = new Date().getTime();
-    if(session.start_at.getTime() > currentTime) {
+    const currentTime = new Date().getTime()
+    const startTime = new Date(session.start_at).getTime()
+    const endTime = new Date(session.end_at).getTime()
+    
+    if(startTime > currentTime) {
         return res.status(403).json({
             error: 'Question and Answer has not begin yet.'
         })
     }
 
-    if(session.end_at.getTime() < currentTime) {
+    if(endTime < currentTime) {
         return res.status(403).json({
             error: 'Question and Answer has ended.'
         })

@@ -11,6 +11,7 @@ export type SessionType = {
     slug: string;
     description?: string;
     speaker?: string;
+    start_at?: string;
 }
 
 export type QuestionType = {
@@ -52,18 +53,18 @@ export type Dispatch = {
 }
 
 export type EventsPage = {
-    events?: EventType[];
-    error?: string;
+    events: EventType[];
+    error: string;
 }
 
 export type SessionsPage = {
-    event?: EventType;
-    sessions?: SessionType[];
-    error?: string;
+    event: EventType;
+    sessions: SessionType[];
+    error: string;
 }
 
-export type QuestionsType = {
-    session?: SessionType;
-    questions?: QuestionType[];
-    error?: string;
+export type QuestionsPage = {
+    session: SessionType;
+    questions: QuestionType[];
+    error: string;
 }

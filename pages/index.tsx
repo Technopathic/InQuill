@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import Link from 'next/link'
 import { useEffect } from 'react'
 import { useStore } from '../store'
 
@@ -13,16 +14,33 @@ const Home: NextPage<types.EventsPage> = (props) => {
     if(props.error) {
       console.log(props.error);
     } else {
-      console.log(props);
       dispatch({ type: 'GET_EVENTS', value: props.events })
     }
-    console.log(props.error);
   }, [dispatch, props])
   
   return (
-    <main>
-      
-    </main>
+    <>
+      <header className="w-full h-40 flex flex-col justify-center items-center">
+          <div className="w-full h-24">
+              <h1 className="text-slate-700 text-8xl text-center">InQuill</h1>
+          </div>
+      </header>
+      <main className="flex flex-col flex-grow items-center mx-4">
+        <section className="w-full max-w-screen-sm">
+          {events.map((e, i) => (
+            <Link href={e.slug} key={i} passHref>
+              <a>
+                <article className="md:h-20 h-16 bg-slate-700 rounded-xl mt-8 flex justify-between items-center px-4 pb-1">
+                  <div className="text-white md:text-4xl text-2xl">
+                    { e.title}
+                  </div>
+                </article>
+              </a>
+            </Link>
+          ))}
+        </section>
+      </main>
+    </>
   )
 }
 
