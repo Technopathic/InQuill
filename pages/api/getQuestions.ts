@@ -34,15 +34,15 @@ export default async function handler(
         })
     }
 
-    const questions = await getQuestions(session.slug);
-    if(questions.error) {
+    const { data, error }= await getQuestions(session.slug);
+    if(error) {
         return res.status(500).json({
-            error: questions.error
+            error
         })
     }
 
     return res.status(200).json({
         session,
-        questions
+        questions: data
     })
 }

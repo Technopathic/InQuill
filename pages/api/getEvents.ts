@@ -18,14 +18,14 @@ export default async function handler(
         return res.status(401).json({ error: 'Not Allowed' })
     }
 
-    const events = await getEvents();
-    if(events.error) {
+    const { data, error } = await getEvents();
+    if(error) {
         return res.status(500).json({
-            error: events.error
+            error
         })
     }
 
     return res.status(200).json({
-        events
+        events: data
     })
 }
