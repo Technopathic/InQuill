@@ -16,7 +16,8 @@ const Home: NextPage<types.EventsPage> = (props) => {
       console.log(props);
       dispatch({ type: 'GET_EVENTS', value: props.events })
     }
-  }, [dispatch, props.error, props.events])
+    console.log(props.error);
+  }, [dispatch, props])
   
   return (
     <main>
@@ -27,7 +28,7 @@ const Home: NextPage<types.EventsPage> = (props) => {
 
 export async function getServerSideProps() {
   const data = await getEvents()
-  return { props: { data } }
+  return { props: { events: data.events, error: data.error } }
   //return { props: { data: { events: [], error: null } }}
 }
 

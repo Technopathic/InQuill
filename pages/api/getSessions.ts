@@ -3,26 +3,29 @@ import { getEvent, getSessions } from './db'
 import { EventType, SessionType } from '../../types'
 
 type ResponseData = {
-    event: EventType;
+    event: EventType | null;
     sessions: SessionType[];
-}
-
-type ResponseError = {
-    error: string;
+    error: any;
 }
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<ResponseData | ResponseError>
+    res: NextApiResponse<ResponseData>
 ) {
     if (req.method !== 'GET') {
-        return res.status(401).json({ error: 'Not Allowed' })
+        return res.status(401).json({ 
+            event: null, 
+            sessions: [], 
+            error: 'Not Allowed' 
+        })
     }
 
     const { eventSlug } = req.query
 
     if(!eventSlug || typeof eventSlug !== 'string') {
         return res.status(401).json({
+            event: null,
+            sessions: [],
             error: 'Incorrect event parameter.'
         })
     }
@@ -30,19 +33,17 @@ export default async function handler(
     const event = await getEvent(eventSlug);
     if (event.error) {
         return res.status(500).json({
+            event: null,
+            sessions: [],
             error: event.error
         })
     }
 
     const { data, error } = await getSessions(event.slug);
-    if(error) {
-        return res.status(500).json({
-            error
-        })
-    }
 
     return res.status(200).json({
         event,
-        sessions: data
+        sessions: data || [],
+        error
     })
 }

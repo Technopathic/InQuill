@@ -3,29 +3,22 @@ import { getEvents } from './db'
 import { EventType } from '../../types'
 
 type ResponseData = {
-    events: EventType[]
-}
-
-type ResponseError = {
-    error: string;
+    events: EventType[];
+    error: any;
 }
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<ResponseData | ResponseError>
+    res: NextApiResponse<ResponseData>
 ) {
     if (req.method !== 'GET') {
-        return res.status(401).json({ error: 'Not Allowed' })
+        return res.status(401).json({ events: [], error: 'Not Allowed' })
     }
 
     const { data, error } = await getEvents();
-    if(error) {
-        return res.status(500).json({
-            error
-        })
-    }
 
     return res.status(200).json({
-        events: data
+        events: data || [],
+        error
     })
 }
