@@ -37,7 +37,7 @@ export const getQuestion = async(id: number) => {
 }
 
 export const storeQuestion = async(questionData: QuestionData) => {
-    const { data, error } =  await supabase.from('questions').insert({ questionData })
+    const { data, error } =  await supabase.from('questions').insert(questionData)
     if (error) {
         return { error: `Unable to store question: ${JSON.stringify(error)}` }
     }
