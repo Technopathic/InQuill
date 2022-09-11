@@ -60,10 +60,9 @@ export const storeQuestionVote = async(id: number) => {
 }
 
 export const signInWithGoogle = async() => {
-   /* const { user, session, error } = await supabase.auth.signIn({
+    const { user, session, error } = await supabase.auth.signIn({
       provider: 'google',
     })
 
-    return { user, session, error }*/
-    return { user: null, session: null, error: null }
+    return { user, session, error }
   }
