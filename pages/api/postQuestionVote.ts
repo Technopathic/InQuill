@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession, getQuestion, storeQuestionVote } from './db'
+import { getSession, getQuestion, storeQuestionVote, updateQuestionVote } from './db'
 import { QuestionType } from '../../types'
 
 type ResponseOptions = {
@@ -43,14 +43,14 @@ export default async function handler(
 
     const userId = null;
 
-    const question = await getQuestion(id);
+    const question = await getQuestion(id)
     if(question.error) {
         return res.status(500).json({
             error: question.error
         })
     }
 
-    const session = await getSession(question.sessionSlug);
+    const session = await getSession(question.sessionSlug)
     if(session.error) {
         return res.status(500).json({
             error: session.error
@@ -63,8 +63,15 @@ export default async function handler(
         })
     }
 
-    const questionData = await storeQuestionVote(id, userId);
+    const questionData = await storeQuestionVote(id, userId)
     if(questionData.error) {
+        return res.status(403).json({
+            error: questionData.error
+        })
+    }
+
+    const updateData = await updateQuestionVote(id)
+    if(updateData.error) {
         return res.status(403).json({
             error: questionData.error
         })

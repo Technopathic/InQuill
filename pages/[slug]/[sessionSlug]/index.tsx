@@ -9,7 +9,6 @@ import { getQuestions, storeQuestion, storeQuestionVote } from '../../../actions
 import { FiChevronUp } from "react-icons/fi";
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
-  const router = useRouter()
   const { session, questions, votes }: types.State = useStore()
   const { dispatch }: types.Dispatch = useStore()
   const questionRef = useRef<HTMLTextAreaElement>(null)
@@ -43,11 +42,12 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
   const handleStoreQuestionVote = async(id: number) => {
     const response = await storeQuestionVote(id)
-    console.log(response)
     if(response.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
     } else {
       dispatch({ type: 'STORE_QUESTION_VOTE', value: response.question })
+      console.log(questions)
+      console.log(votes)
     }
   }
   

@@ -51,5 +51,20 @@ export const storeQuestionVote = async(questionId: number, userId: number | null
         return { error: `Unable to store vote: ${error}` }
     }
 
+   
     return data[0]
+}
+
+export const updateQuestionVote = async(questionId: number) => {
+    const { data, error } = await supabase.from('questions').select('id, votes').eq('id', questionId).eq('archived', false)
+    if(error) {
+        return { error: `Unable to update question votes: ${error}` }
+    }
+
+    const { data: updateData, error: updateError } = await supabase.from('questions').update({ votes: data[0].votes++}).match({ id: data[0].id })
+    if(updateError) {
+        return { error: `Unable to update question votes: ${updateError}` }
+    }
+
+    return updateData[0]
 }
