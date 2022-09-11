@@ -17,7 +17,7 @@ const Sessions: NextPage<types.SessionsPage> = (props) => {
 
   useEffect(() => {
     if(props.error) {
-      console.log(props.error);
+      dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
     } else {
       dispatch({ type: 'GET_SESSIONS', value: {  event: props.event, sessions: props.sessions } })
     }

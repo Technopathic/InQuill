@@ -44,6 +44,7 @@ export type State = {
     session: SessionType | null;
     questions: QuestionType[];
     snack: Snack;
+    votes: number[];
 }
 
 export type ActionType = 'GET_EVENTS' | 'GET_SESSIONS' | 'GET_QUESTIONS' | 'STORE_QUESTION' | 'STORE_QUESTION_VOTE' | 'SET_SNACK';

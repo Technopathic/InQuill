@@ -10,15 +10,14 @@ import { FiChevronUp } from "react-icons/fi";
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
   const router = useRouter()
-  const { sessionSlug } = router.query
-  const { session, questions }: types.State = useStore()
+  const { session, questions, votes }: types.State = useStore()
   const { dispatch }: types.Dispatch = useStore()
   const questionRef = useRef<HTMLTextAreaElement>(null)
   const authorRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if(props.error) {
-      console.log(props.error);
+      dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
     } else {
       dispatch({ type: 'GET_QUESTIONS', value: {  session: props.session, questions: props.questions } })
     }
@@ -39,6 +38,15 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
         dispatch({ type: 'STORE_QUESTION', value: response.question })
         questionRef.current.value = ''
       }
+    }
+  }
+
+  const handleStoreQuestionVote = async(id: number) => {
+    const response = await storeQuestionVote(id)
+    if(response.error) {
+      dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
+    } else {
+      dispatch({ type: 'STORE_QUESTION_VOTE', value: response.question })
     }
   }
   
@@ -66,7 +74,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
           {questions.map((question, i) => (
             <article key={i} className="flex bg-white rounded-xl mt-8 p-4">
                 <div className="flex flex-col items-center pr-4">
-                    <div className="cursor-pointer">
+                    <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-teal-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
                       <FiChevronUp size={32} />
                     </div>
                     <p className="text-2xl mb-2">{question.votes}</p>

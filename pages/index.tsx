@@ -12,7 +12,7 @@ const Home: NextPage<types.EventsPage> = (props) => {
 
   useEffect(() => {
     if(props.error) {
-      console.log(props.error);
+      dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
     } else {
       dispatch({ type: 'GET_EVENTS', value: props.events })
     }
