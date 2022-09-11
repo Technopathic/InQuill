@@ -17,7 +17,7 @@ export const getEvent = async(slug: string) => {
 export const getSessions = async(slug: string) => await supabase.from('sessions').select('id, eventSlug, title, slug, description, speaker, start_at').eq('eventSlug', slug).eq('archived', false).order('start_at', { ascending: true })
 
 export const getSession = async(slug: string) => {
-    const { data, error } = await supabase.from('sessions').select('id, eventSlug, title, slug, description, speaker, start_at').eq('slug', slug).eq('archived', false)
+    const { data, error } = await supabase.from('sessions').select('id, eventSlug, title, slug, description, speaker, start_at, end_at').eq('slug', slug).eq('archived', false)
     if (error) { 
         return { error: `Unable to fetch session: ${error}` }
     }

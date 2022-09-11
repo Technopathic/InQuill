@@ -12,6 +12,7 @@ export type SessionType = {
     description?: string;
     speaker?: string;
     start_at?: string;
+    end_at?: string;
 }
 
 export type QuestionType = {

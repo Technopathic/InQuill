@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
 import { useStore } from '../../../store'
+import dayjs from 'dayjs'
 
 import * as types from '../../../types'
 import { getQuestions, storeQuestion, storeQuestionVote } from '../../../actions'
@@ -46,8 +47,6 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
     } else {
       dispatch({ type: 'STORE_QUESTION_VOTE', value: response.question })
-      console.log(questions)
-      console.log(votes)
     }
   }
   
@@ -58,7 +57,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
               <h1 className="text-slate-700 text-2xl text-center">{session.title}</h1>
               <div className="flex justify-between w-full">
                 <span>{session.speaker}</span>
-                <span></span>
+                <span>{dayjs(session.end_at).format('DD/MM/YYYY HH:mm')}</span>
               </div>
               <div className="w-full mt-4">
                 <textarea className="w-full h-32 p-2 resize-none rounded-xl" ref={questionRef} placeholder="Ask your question here"></textarea>

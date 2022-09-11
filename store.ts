@@ -103,10 +103,6 @@ const reducer = (state: types.State, action: types.Action): types.State => {
                 votes.push(voteQuestion.id)
             }
 
-            console.log(questions);
-
-            console.log(votes);
-            
             return {
                 ...state,
                 questions,
