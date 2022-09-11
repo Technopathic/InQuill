@@ -43,6 +43,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
   const handleStoreQuestionVote = async(id: number) => {
     const response = await storeQuestionVote(id)
+    console.log(response)
     if(response.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
     } else {

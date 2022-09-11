@@ -1,12 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession, getQuestion, storeQuestionVote } from './db'
+import { QuestionType } from '../../types'
 
 type ResponseOptions = {
     body: 'OK'
 }
 
 type ResponseData = {
-    success: boolean;
+    question: QuestionType;
 }
 
 type ResponseError = {
@@ -70,6 +71,6 @@ export default async function handler(
     }
 
     return res.status(200).json({
-        success: true
+        question: questionData
     })
 }

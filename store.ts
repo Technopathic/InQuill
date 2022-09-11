@@ -97,9 +97,9 @@ const reducer = (state: types.State, action: types.Action): types.State => {
         case actionTypes.STORE_QUESTION_VOTE: {
             const questions = state.questions
             const votes = state.votes
-            const voteQuestion = questions.find(question => question.id === action.value.question.id)
+            const voteQuestion = questions.find(question => question.id === action.value.id)
             if(voteQuestion) {
-                voteQuestion.votes = action.value.question.votes
+                voteQuestion.votes = action.value.votes
                 votes.push(voteQuestion.id)
             }
             
