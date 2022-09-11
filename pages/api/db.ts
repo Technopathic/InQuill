@@ -61,7 +61,7 @@ export const updateQuestionVote = async(questionId: number) => {
         return { error: `Unable to update question votes: ${error}` }
     }
 
-    const { data: updateData, error: updateError } = await supabase.from('questions').update({ votes: data[0].votes++}).match({ id: data[0].id })
+    const { data: updateData, error: updateError } = await supabase.from('questions').update({ votes: data[0].votes + 1 }).match({ id: data[0].id })
     if(updateError) {
         return { error: `Unable to update question votes: ${updateError}` }
     }
