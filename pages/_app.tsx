@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import { usePanelbear } from '@panelbear/panelbear-nextjs';
 import { useCreateStore, Provider } from '../store'
 
-import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Snack from '../components/Snack'
 
@@ -14,7 +13,6 @@ const App = ({ Component, pageProps } : AppProps) => {
   const store = useCreateStore(pageProps.state);
 
   const router = useRouter()
-  const excludeHeader: string[] = []
   const excludeFooter: string[] = []
 
   usePanelbear(process.env.PANEL_BEAR_ID || '');
