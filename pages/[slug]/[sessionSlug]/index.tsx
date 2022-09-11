@@ -3,8 +3,8 @@ import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
 import { useStore } from '../../../store'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
+//import utc from 'dayjs/plugin/utc'
+//import timezone from 'dayjs/plugin/timezone'
 
 import * as types from '../../../types'
 import { getQuestions, storeQuestion, storeQuestionVote, signInWithGoogle } from '../../../actions'
@@ -13,9 +13,9 @@ import { FiChevronUp } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { SiTwitter } from "react-icons/si"
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault('Europe/Helsinki');
+//dayjs.extend(utc);
+//dayjs.extend(timezone);
+//dayjs.tz.setDefault('Europe/Helsinki');
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
   const { session, questions, votes }: types.State = useStore()
