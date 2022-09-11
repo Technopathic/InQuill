@@ -25,7 +25,7 @@ export const getSession = async(slug: string) => {
     return data[0]
 }
 
-export const getQuestions = async(slug: string) => await supabase.from('questions').select('id, sessionSlug, author, userId, votes, content, created_at').eq('sessionSlug', slug).eq('archived', false)
+export const getQuestions = async(slug: string) => await supabase.from('questions').select('id, sessionSlug, author, userId, votes, content, created_at').eq('sessionSlug', slug).eq('archived', false).order('start_at', { ascending: false })
    
 export const getQuestion = async(id: number) => {
     const { data, error } = await supabase.from('questions').select('id, sessionSlug, votes').eq('id', id).eq('archived', false)

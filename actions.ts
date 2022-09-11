@@ -3,6 +3,7 @@ import axios from 'axios'
 export const getEvents = async() => {
     const data = await axios.get(`${process.env.API_URL}/getEvents`)
     .then(res => res.data)
+    .catch(error => error.response.data)
 
     return data
 }
@@ -10,6 +11,7 @@ export const getEvents = async() => {
 export const getSessions = async(slug: string) => {
     const data = await axios.get(`${process.env.API_URL}/getSessions?eventSlug=${slug}`)
     .then(res => res.data)
+    .catch(error => error.response.data)
 
     return data
 }
@@ -17,21 +19,12 @@ export const getSessions = async(slug: string) => {
 export const getQuestions = async(slug: string) => {
     const data = await axios.get(`${process.env.API_URL}/getQuestions?sessionSlug=${slug}`)
     .then(res => res.data)
+    .catch(error => error.response.data)
 
     return data
 }
 
 export const storeQuestion = async(sessionSlug: string, content: string, author: string) => {
-    /*const data = await axios.post(`${process.env.API_URL}/postQuestion` || '', JSON.stringify({
-        sessionSlug,
-        content,
-        author
-    }), {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })*/
-
     const data = await axios({
         method: 'POST',
         url: `${process.env.API_URL}/postQuestion` || '',
@@ -45,6 +38,7 @@ export const storeQuestion = async(sessionSlug: string, content: string, author:
         }
     })
     .then(res => res.data)
+    .catch(error => error.response.data)
 
     return data
 }
@@ -58,6 +52,7 @@ export const storeQuestionVote = async(id: number) => {
         }
     })
     .then(res => res.data)
+    .catch(error => error.response.data)
 
     return data
 }

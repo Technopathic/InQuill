@@ -37,14 +37,15 @@ export default async function handler(
 
     const { sessionSlug, content, author } = req.body
 
-    if(
-        !sessionSlug || 
-        !content ||
-        typeof sessionSlug !== 'string' || 
-        typeof content !== 'string'
-    ) {
+    if(!sessionSlug || typeof sessionSlug !== 'string') {
         return res.status(401).json({
-            error: 'Missing session or content.'
+            error: 'Missing session'
+        })
+    }
+
+    if(!content || typeof content !== 'string') {
+        return res.status(401).json({
+            error: 'Missing question content'
         })
     }
     

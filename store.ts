@@ -1,7 +1,6 @@
 import { useLayoutEffect } from 'react'
 import create from 'zustand'
 import createContext from 'zustand/context'
-import * as actions from './actions'
 
 import * as types from './types'
 
@@ -10,7 +9,8 @@ const actionTypes: Record<string, types.ActionType> = {
     GET_SESSIONS: 'GET_SESSIONS',
     GET_QUESTIONS: 'GET_QUESTIONS',
     STORE_QUESTION: 'STORE_QUESTION',
-    STORE_QUESTION_VOTE: 'STORE_QUESTION_VOTE'
+    STORE_QUESTION_VOTE: 'STORE_QUESTION_VOTE',
+    SET_SNACK: 'SET_SNACK'
 }
 
 let store: any
@@ -21,7 +21,10 @@ const initialState: types.State  = {
     sessions: [],
     session: null,
     questions: [],
-    error: ''
+    snack: {
+        show: false,
+        message: null
+    }
 }
 
 const context = createContext()
@@ -82,7 +85,7 @@ const reducer = (state: types.State, action: types.Action): types.State => {
 
         case actionTypes.STORE_QUESTION: {
             const questions = state.questions
-            questions.unshift(action.value.question)
+            questions.unshift(action.value)
 
             return {
                 ...state,
@@ -100,6 +103,17 @@ const reducer = (state: types.State, action: types.Action): types.State => {
             return {
                 ...state,
                 questions
+            }
+        }
+
+        case actionTypes.SET_SNACK: {
+            const snack = state.snack
+            snack.show = action.value.show
+            snack.message = action.value.message
+
+            return {
+                ...state,
+                snack
             }
         }
         

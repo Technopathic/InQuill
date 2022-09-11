@@ -32,16 +32,21 @@ export type QuestionData = {
     userId?: number;
 }
 
+export type Snack = {
+    show: boolean;
+    message: string | null;
+}
+
 export type State = {
     events: EventType[];
     event: EventType | null;
     sessions: SessionType[];
     session: SessionType | null;
     questions: QuestionType[];
-    error: string;
+    snack: Snack;
 }
 
-export type ActionType = 'GET_EVENTS' | 'GET_SESSIONS' | 'GET_QUESTIONS' | 'STORE_QUESTION' | 'STORE_QUESTION_VOTE';
+export type ActionType = 'GET_EVENTS' | 'GET_SESSIONS' | 'GET_QUESTIONS' | 'STORE_QUESTION' | 'STORE_QUESTION_VOTE' | 'SET_SNACK';
 
 export type Action = {
     type: ActionType;

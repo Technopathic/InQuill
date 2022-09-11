@@ -6,6 +6,7 @@ import { useCreateStore, Provider } from '../store'
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import Snack from '../components/Snack'
 
 import '../globals.css'
 
@@ -34,6 +35,7 @@ const App = ({ Component, pageProps } : AppProps) => {
         <div className="flex flex-col justify-between min-h-screen text-gray-700 dark:text-gray-50">
           <Component {...pageProps} />
           {!excludeFooter.includes(router.pathname) && <Footer />}
+          <Snack />
         </div>
       </Provider>
     </>

@@ -32,7 +32,13 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
   const handleStoreQuestion = async() => {
     if(questionRef.current) {
-      await storeQuestion(session.slug, questionRef.current.value, 'Anonymous')
+      const response = await storeQuestion(session.slug, questionRef.current.value, 'Anonymous')
+      if(response.error) {
+        dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
+      } else {
+        dispatch({ type: 'STORE_QUESTION', value: response.question })
+        questionRef.current.value = ''
+      }
     }
   }
   
@@ -42,9 +48,9 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
           <div className="flex flex-col justify-center items-center w-full py-8">
               <h1 className="text-slate-700 text-2xl text-center">{session.title}</h1>
               <div className="w-full max-w-screen-sm mt-4">
-                <textarea className="w-full h-32 p-2 resize-none" ref={questionRef}></textarea>
-                <div className="flex justify-end">
-                  <div className="cursor-pointer bg-slate-800 py-2 px-10 rounded-xl text-white text-xl" onClick={handleStoreQuestion}>Ask</div>
+                <textarea className="w-full h-32 p-2 resize-none rounded-xl" ref={questionRef} placeholder="Ask your question here"></textarea>
+                <div className="flex justify-end mt-1">
+                  <div className="cursor-pointer bg-slate-800 py-2 px-10 rounded-xl text-white text-xl select-none" onClick={handleStoreQuestion}>Ask</div>
                 </div>
               </div>
           </div>
@@ -59,7 +65,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
                       <FiChevronUp size={32} />
                     </div>
                     <p className="text-2xl mb-2">{question.votes}</p>
-                    <span>Votes</span>
+                    <span className="text-sm">Votes</span>
                 </div>
                 <div>
                   <span className="text-sm">{question.author}</span>
