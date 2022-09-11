@@ -1,18 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession, getQuestion, storeQuestionVote, updateQuestionVote } from './db'
-import { QuestionType } from '../../types'
+import { deleteQuestion } from './db'
 
 type ResponseOptions = {
     body: 'OK';
 }
 
 type ResponseData = {
-    question: QuestionType;
+    success: boolean;
 }
 
 type ResponseError = {
     error: string;
 }
+
 
 export default async function handler(
     req: NextApiRequest,
@@ -33,7 +33,7 @@ export default async function handler(
         return res.status(401).json({ error: 'Not Allowed' })
     }
 
-    const { id } = req.body;
+    const { id } = req.body
 
     if(!id || typeof id !== 'number') {
         return res.status(401).json({
@@ -41,43 +41,15 @@ export default async function handler(
         })
     }
 
-    const userId = null;
-
-    const question = await getQuestion(id)
+    const question = await deleteQuestion(id)
     if(question.error) {
-        return res.status(500).json({
+        return res.status(403).json({
             error: question.error
         })
     }
 
-    const session = await getSession(question.sessionSlug)
-    if(session.error) {
-        return res.status(500).json({
-            error: session.error
-        })
-    }
-
-    if(question.votes >= 100) {
-        return res.status(403).json({
-            error: 'Question has reached maximum votes'
-        })
-    }
-
-    const questionData = await storeQuestionVote(id, userId)
-    if(questionData.error) {
-        return res.status(403).json({
-            error: questionData.error
-        })
-    }
-
-    const updateData = await updateQuestionVote(id)
-    if(updateData.error) {
-        return res.status(403).json({
-            error: questionData.error
-        })
-    }
-
     return res.status(200).json({
-        question: updateData
+        success: true
     })
+    
 }

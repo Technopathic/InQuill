@@ -3,7 +3,7 @@ import { getSession, storeQuestion } from './db'
 import { QuestionType } from '../../types'
 
 type ResponseOptions = {
-    body: 'OK'
+    body: 'OK';
 }
 
 type ResponseData = {

@@ -68,3 +68,59 @@ export const updateQuestionVote = async(questionId: number) => {
 
     return updateData[0]
 }
+
+export const deleteQuestion = async(questionId: number) => {
+    const { data, error } = await supabase.from('questions').select('id, votes').eq('id', questionId).eq('archived', false)
+    if(error) {
+        return { error: `Unable to delete question: ${error}` }
+    }
+
+    const { data: updateData, error: updateError } = await supabase.from('questions').update({ archived: true }).match({ id: data[0].id })
+    if(updateError) {
+        return { error: `Unable to update question votes: ${updateError}` }
+    }
+
+    return updateData[0]
+}
+
+export const answerQuestion = async(questionId: number) => {
+    const { data, error } = await supabase.from('questions').select('id, votes').eq('id', questionId).eq('archived', false)
+    if(error) {
+        return { error: `Unable to delete question: ${error}` }
+    }
+
+    const { data: updateData, error: updateError } = await supabase.from('questions').update({ answered: true }).match({ id: data[0].id })
+    if(updateError) {
+        return { error: `Unable to update question votes: ${updateError}` }
+    }
+
+    return updateData[0]
+}
+
+export const banUser = async(userId: string) => {
+    const { data, error } = await supabase.from('bans').insert({ userId })
+    if (error) {
+        return { error: `Unable to ban user: ${error}` }
+    }
+
+   
+    return data[0]
+}
+
+export const isBanned = async(userId: string) => {
+    const { data, error } = await supabase.from('bans').select('*').eq('userId', userId)
+    if(error || data.length === 0) {
+        return false
+    }
+
+    return true
+}
+
+export const isAdmin = async(userId: string) => {
+    const { data, error } = await supabase.from('admins').select('*').eq('userId', userId)
+    if(error || data.length === 0) {
+        return false
+    }
+
+    return true
+}

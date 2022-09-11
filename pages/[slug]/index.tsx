@@ -33,7 +33,7 @@ const Sessions: NextPage<types.SessionsPage> = (props) => {
     <>
       <header className="w-full h-40 flex flex-col justify-center items-center">
           <div className="flex flex-col justify-center items-center w-full">
-              <h1 className="text-slate-700 text-3xl text-center">{event.title}</h1>
+              <h1 className="text-slate-700 text-4xl text-center font-bold">{event.title}</h1>
               <p className="text-base mt-4">Welcome! All available sessions are shown below.</p>
           </div>
       </header>
