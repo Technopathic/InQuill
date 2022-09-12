@@ -7,7 +7,7 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 
 import * as types from '../../../types'
-import { getQuestions, storeQuestion, storeQuestionVote, signInWithGoogle, getUser } from '../../../actions'
+import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser } from '../../../actions'
 
 import { FiChevronUp } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
@@ -68,20 +68,8 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
     }
   }
 
-  const handleSignIn = async(provider: string) => {
-    switch(provider) {
-      case 'Google': {
-        await signInWithGoogle()
-        break
-      }
-
-      case 'Twitter': {
-        break
-      }
-
-      default:
-        break
-    }
+  const handleSignIn = async(provider: 'google' | 'twitter') => {
+    await signIn(provider)
   }
 
   const renderInput = () => {
@@ -122,7 +110,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
           <div className="flex flex-col items-center mt-4 justify-center">
             <p className="mb-2 text-xl">Sign in to ask questions</p>
             <div className="flex">
-              <div onClick={() => handleSignIn('Google')} className="mx-2 bg-slate-800 text-white uppercase px-6 py-2 rounded select-none cursor-pointer flex items-center"><FcGoogle size={22} className="mr-2"/> Google</div>
+              <div onClick={() => handleSignIn('google')} className="mx-2 bg-slate-800 text-white uppercase px-6 py-2 rounded select-none cursor-pointer flex items-center"><FcGoogle size={22} className="mr-2"/> Google</div>
               <div className="mx-2 bg-slate-800 text-white uppercase px-6 py-2 rounded select-none cursor-pointer flex items-center"><SiTwitter size={22} className="mr-2" color="#1DA1F2"/> Twitter</div>
             </div>
           </div>

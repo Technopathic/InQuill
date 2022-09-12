@@ -73,11 +73,10 @@ export const storeQuestionVote = async(id: number) => {
     }
 }
 
-export const signInWithGoogle = async() => {
-    const { user, session, error } = await supabase.auth.signIn({
-      provider: 'google',
-    })
-
+export const signIn = async(provider: 'google' | 'twitter') => {
+    const { user, session, error } = await supabase.auth.signIn({ provider })
+    console.log(user)
+    console.log(session)
     return { user, session, error }
 }
 
