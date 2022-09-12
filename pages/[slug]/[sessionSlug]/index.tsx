@@ -1,10 +1,10 @@
 import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { useStore } from '../../../store'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import { RealtimeClient } from '@supabase/realtime-js'
 
 import * as types from '../../../types'
 import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion } from '../../../actions'
@@ -16,6 +16,9 @@ import { SiTwitter } from "react-icons/si"
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('Europe/Helsinki');
+
+const REALTIME_URL = 'wss://qepbbrribkrkypytwssf.supabase.co/realtime/v1'
+const socket = new RealtimeClient(REALTIME_URL)
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
   const { session, questions, votes, isAdmin }: types.State = useStore()
@@ -45,6 +48,30 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       dispatch({ type: 'GET_QUESTIONS', value: {  session: props.session, questions: props.questions } })
     }
   }, [dispatch, props])
+
+  useEffect(() => {
+    const handleGetQuestions = async() => {
+      if(session) {
+        const data = await getQuestions(session.slug)
+        if(data.error) {
+          return;
+        } else {
+          dispatch({ type: 'GET_QUESTIONS', value: {  session: data.session, questions: data.questions } })
+        }
+      }
+    }
+
+    socket.connect()
+    const channel = socket.channel('realtime:public:questions')
+    channel.on('INSERT', async() => await handleGetQuestions())
+    channel.on('UPDATE', async() => await handleGetQuestions())
+
+    channel
+      .subscribe()
+      .receive('ok', () => console.log('Connecting'))
+      .receive('error', () => console.log('Failed'))
+      .receive('timeout', () => console.log('Waiting...'))
+  }, [session, dispatch])
 
   useEffect(() => {
     const getUserAsync = async() => {
