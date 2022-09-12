@@ -46,9 +46,10 @@ export type State = {
     questions: QuestionType[];
     snack: Snack;
     votes: number[];
+    token: string | null;
 }
 
-export type ActionType = 'GET_EVENTS' | 'GET_SESSIONS' | 'GET_QUESTIONS' | 'STORE_QUESTION' | 'STORE_QUESTION_VOTE' | 'SET_SNACK';
+export type ActionType = 'GET_EVENTS' | 'GET_SESSIONS' | 'GET_QUESTIONS' | 'STORE_QUESTION' | 'STORE_QUESTION_VOTE' | 'SET_SNACK' | 'SET_TOKEN';
 
 export type Action = {
     type: ActionType;

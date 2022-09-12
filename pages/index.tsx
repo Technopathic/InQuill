@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { useStore } from '../store'
@@ -7,6 +8,7 @@ import * as types from '../types'
 import { getEvents } from '../actions'
 
 const Home: NextPage<types.EventsPage> = (props) => {
+  const router = useRouter()
   const { events }: types.State = useStore()
   const { dispatch }: types.Dispatch = useStore()
 
@@ -17,6 +19,10 @@ const Home: NextPage<types.EventsPage> = (props) => {
       dispatch({ type: 'GET_EVENTS', value: props.events })
     }
   }, [dispatch, props])
+
+  useEffect(() => {
+   console.log(router.query)
+  }, [])
   
   return (
     <>
