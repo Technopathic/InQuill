@@ -36,6 +36,13 @@ export default async function handler(
     }
 
     const { sessionSlug, content, author } = req.body
+
+    if(!req.headers.authorization) {
+        return res.status(403).json({
+            error: 'Please login to continue'
+        })
+    }
+    
     const user = await getUser(req.headers.authorization)
     if(!user) {
         return res.status(403).json({
