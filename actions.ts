@@ -159,7 +159,7 @@ export const getIsAdmin = async () => {
         const { currentSession }= JSON.parse(auth)
         const data = await axios({
             method: 'GET',
-            url: `${process.env.API_URL}/answerQuestion` || '',
+            url: `${process.env.API_URL}/getAdmin` || '',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': currentSession.access_token
