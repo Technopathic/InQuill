@@ -7,7 +7,7 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 
 import * as types from '../../../types'
-import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getUserByCookie } from '../../../actions'
+import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getUserByCookie, getQuestionVotes } from '../../../actions'
 
 import { FiChevronUp } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
@@ -25,10 +25,17 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
+    async function getVotes() {
+      const questionVotes = await getQuestionVotes()
+      dispatch({ type: 'GET_QUESTION_VOTES', value: questionVotes })
+    }
+
+    getVotes()
+    
     if(props.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
     } else {
-      dispatch({ type: 'GET_QUESTIONS', value: {  session: props.session, questions: props.questions, votes: props.votes } })
+      dispatch({ type: 'GET_QUESTIONS', value: {  session: props.session, questions: props.questions } })
     }
   }, [dispatch, props])
 
@@ -160,8 +167,8 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 export async function getServerSideProps(context: any) {
   const token = await getUserByCookie(context.req)
   console.log(token)
-  const data = await getQuestions(context.query.sessionSlug, token.token)
-  return { props: { session: data.session, questions: data.questions, votes: data.votes, error: data.error} }
+  const data = await getQuestions(context.query.sessionSlug)
+  return { props: { session: data.session, questions: data.questions, error: data.error} }
 }
 
 export default Questions

@@ -48,7 +48,7 @@ export type State = {
     votes: number[];
 }
 
-export type ActionType = 'GET_EVENTS' | 'GET_SESSIONS' | 'GET_QUESTIONS' | 'STORE_QUESTION' | 'STORE_QUESTION_VOTE' | 'SET_SNACK';
+export type ActionType = 'GET_EVENTS' | 'GET_SESSIONS' | 'GET_QUESTIONS' | 'GET_QUESTION_VOTES' | 'STORE_QUESTION' | 'STORE_QUESTION_VOTE' | 'SET_SNACK';
 
 export type Action = {
     type: ActionType;
@@ -73,6 +73,5 @@ export type SessionsPage = {
 export type QuestionsPage = {
     session: SessionType;
     questions: QuestionType[];
-    votes: number[];
     error: string;
 }

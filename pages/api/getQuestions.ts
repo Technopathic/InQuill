@@ -1,12 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession, getQuestions, getQuestionVotes, getUser } from './db'
+import { getSession, getQuestions } from './db'
 import { SessionType, QuestionType } from '../../types'
 
 type ResponseData = {
     session: SessionType | null;
     questions: QuestionType[];
     error: any;
-    votes: number[];
 }
 
 export default async function handler(
@@ -17,23 +16,8 @@ export default async function handler(
         return res.status(401).json({ 
             session: null, 
             questions: [], 
-            error: 'Not Allowed',
-            votes: []
+            error: 'Not Allowed'
         })
-    }
-
-    const votes = []
-    if(req.headers.authorization) {
-        const user = await getUser(req.headers.authorization)
-        if(user.user) {
-            const { data: voteData, error: voteError } = await getQuestionVotes(user.user.id)
-            console.warn({ voteData })
-            if(voteData) {
-                for (const vote of voteData) {
-                    votes.push(vote.questionId)
-                }
-            }
-        }
     }
 
     const { sessionSlug } = req.query
@@ -42,8 +26,7 @@ export default async function handler(
         return res.status(401).json({
             session: null,
             questions: [],
-            error: 'Incorrect session parameter.',
-            votes: []
+            error: 'Incorrect session parameter.'
         })
     }
 
@@ -52,18 +35,15 @@ export default async function handler(
         return res.status(500).json({
             session: null,
             questions: [],
-            error: session.error,
-            votes: []
+            error: session.error
         })
     }
 
     const { data, error }= await getQuestions(session.slug);
-    console.warn(votes)
 
     return res.status(200).json({
         session,
         questions: data || [],
-        error,
-        votes
+        error
     })
 }

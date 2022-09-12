@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { useStore } from '../store'
 
 import * as types from '../types'
-import { getEvents, getUser, onAuthStateChanged } from '../actions'
+import { getEvents, getUser } from '../actions'
 
 const Home: NextPage<types.EventsPage> = (props) => {
   const router = useRouter()

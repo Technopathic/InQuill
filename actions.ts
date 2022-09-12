@@ -34,24 +34,37 @@ export const getSessions = async(slug: string) => {
     return data
 }
 
-export const getQuestions = async(slug: string, token: string | null) => {
-    const headers: any = {
-        'Content-Type': 'application/json'
-    }
-
-    if(token) {
-        headers['Authorization'] = token
-    }
+export const getQuestions = async(slug: string) => {
     const data = await axios({
         method: 'GET',
         url: `${process.env.API_URL}/getQuestions?sessionSlug=${slug}`,
-        headers
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
     .then(res => res.data)
     .catch(error => error.response.data)
 
-    console.warn({ data })
     return data
+}
+
+export const getQuestionVotes = async() => {
+    const auth = localStorage.getItem('supabase.auth.token')
+    if(auth) {
+        const { currentSession }= JSON.parse(auth)
+        const data = await axios({
+            method: 'GET',
+            url: `${process.env.API_URL}/getQuestionVotes` || '',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': currentSession.access_token
+            }
+        })
+        .then(res => res.data)
+        .catch(error => error.response.data)
+    
+        return data
+    }
 }
 
 export const storeQuestion = async(sessionSlug: string, content: string, author: string) => {
