@@ -15,7 +15,10 @@ const env = {
   "APP_IMAGE_WIDTH": "1200",
   "APP_IMAGE_HEIGHT": "630",
   "APP_SITE_NAME": "InQuill Live",
-  "API_URL": "https://inquill.vercel.app/api"
+  "API_URL": "https://inquill.vercel.app/api",
+
+  "NEXT_PUBLIC_SUPABASE_URL": "https://qepbbrribkrkypytwssf.supabase.co",
+  "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzOTE4MTc3MywiZXhwIjoxOTU0NzU3NzczfQ.-8sYelhGVpB5qLchFObwTg9l6lCMsuizj6wq_cbZzRk"
 }
 
 const nextConfig = {
