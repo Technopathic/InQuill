@@ -74,5 +74,4 @@ export type QuestionsPage = {
     session: SessionType;
     questions: QuestionType[];
     error: string;
-    user?: any;
 }

@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useStore } from '../../../store'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
@@ -22,6 +22,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   const { dispatch }: types.Dispatch = useStore()
   const questionRef = useRef<HTMLTextAreaElement>(null)
   const authorRef = useRef<HTMLInputElement>(null)
+  const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
     console.log(props.user)
@@ -31,6 +32,13 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       dispatch({ type: 'GET_QUESTIONS', value: {  session: props.session, questions: props.questions } })
     }
   }, [dispatch, props])
+
+  useEffect(() => {
+    async () => {
+      const auth = await getUser()
+      setUser(auth)
+    }
+  }, [])
 
   if(!session) {
     return (
@@ -98,7 +106,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
         </div>
       )
     } else {
-      if(props.user) {
+      if(user) {
         return (
           <div className="w-full mt-4">
             <textarea className="w-full h-32 p-2 resize-none rounded-xl" ref={questionRef} placeholder="Ask your question here"></textarea>
@@ -159,9 +167,8 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 }
 
 export async function getServerSideProps(context: any) {
-  const user = await getUser()
   const data = await getQuestions(context.query.sessionSlug)
-  return { props: { session: data.session, questions: data.questions, error: data.error, user } }
+  return { props: { session: data.session, questions: data.questions, error: data.error} }
 }
 
 export default Questions
