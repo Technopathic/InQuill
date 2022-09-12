@@ -1,9 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession, storeQuestion } from './db'
+import { getSession, storeQuestion, getUser } from './db'
 import { QuestionType } from '../../types'
-import {
-    getUser
-  } from '@supabase/auth-helpers-nextjs';
 
 type ResponseOptions = {
     body: 'OK';
@@ -39,8 +36,8 @@ export default async function handler(
     }
 
     const { sessionSlug, content, author } = req.body
-    const user = await getUser({req, res})
-    if(!user.user) {
+    const user = await getUser(req.headers.authorization)
+    if(!user) {
         return res.status(403).json({
             error: 'Please login to continue'
         })
@@ -109,7 +106,7 @@ export default async function handler(
         author: questionAuthor || 'Anonymous',
         votes: 0,
         content: questionContent,
-        userId: user.user.id
+        userId: user.id
     }
 
     const question = await storeQuestion(questionData);
@@ -123,7 +120,7 @@ export default async function handler(
         ...questionData,
         id: question.id,
         created_at: question.created_at,
-        userId: user.user.id
+        userId: user.id
     }
 
     return res.status(200).json({
