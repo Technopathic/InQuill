@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import type { NextPage } from 'next'
 import { useEffect, useRef, useState } from 'react'
 import { useStore } from '../../../store'
@@ -19,8 +20,8 @@ dayjs.tz.setDefault('Europe/Helsinki');
 
 const REALTIME_URL = 'wss://qepbbrribkrkypytwssf.supabase.co/realtime/v1'
 const socket = new RealtimeClient(REALTIME_URL,  { params: { apikey: SUPABASE_PUBLIC_KEY }})
-socket.connect()
-const channel = socket.channel('realtime:public:questions')
+
+let publicSchema = null
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
   const { session, questions, votes, isAdmin }: types.State = useStore()
@@ -37,6 +38,13 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
     getVotes()
 
+    async function getUserAsync() {
+      const auth = getUser()
+      setUser(auth)
+    }
+
+    getUserAsync()
+
     async function getAdmin() {
       const admin = await getIsAdmin()
       dispatch({ type: 'SET_ADMIN', value: admin.success })
@@ -49,45 +57,40 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
     } else {
       dispatch({ type: 'GET_QUESTIONS', value: {  session: props.session, questions: props.questions } })
     }
-  }, [dispatch, props])
 
-  useEffect(() => {
-    const handleGetQuestions = async() => {
-      if(session) {
-        const data = await getQuestions(session.slug)
-        if(data.error) {
-          return;
-        } else {
-          dispatch({ type: 'GET_QUESTIONS', value: {  session: data.session, questions: data.questions } })
-        }
-      }
-    }
+    createSubscription()
+    socket.connect()
 
-    channel.on('INSERT', async() => await handleGetQuestions())
-    channel.on('UPDATE', async() => await handleGetQuestions())
-
-    channel
-    .subscribe()
-    .receive('ok', () => console.log('Connecting'))
-    .receive('error', () => console.log('Failed'))
-    .receive('timeout', () => console.log('Waiting...'))
-  
     return (() => {
       async () => {
         await supabase.removeAllSubscriptions()
         await socket.disconnect()
       }
     })
-  }, [session, dispatch])
-
-  useEffect(() => {
-    const getUserAsync = async() => {
-      const auth = getUser()
-      setUser(auth)
-    }
-
-    getUserAsync()
+    
   }, [])
+
+  const handleGetQuestions = async() => {
+    if(session) {
+      const data = await getQuestions(session.slug)
+      if(data.error) {
+        return;
+      } else {
+        dispatch({ type: 'GET_QUESTIONS', value: {  session: data.session, questions: data.questions } })
+      }
+    }
+  }
+
+  const createSubscription = () => {
+    const channel = socket.channel('realtime:public:questions')
+    channel.on('INSERT', async() => await handleGetQuestions())
+    channel.on('UPDATE', async() => await handleGetQuestions())
+    channel
+      .subscribe()
+      .receive('ok', () => console.log('Connecting'))
+      .receive('error', () => console.log('Failed'))
+      .receive('timeout', () => console.log('Waiting...'))
+  }
 
   if(!session) {
     return (
