@@ -21,7 +21,7 @@ export default async function handler(
     res: NextApiResponse<ResponseOptions | ResponseData | ResponseError>
 ) {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE');
 
@@ -42,7 +42,7 @@ export default async function handler(
             error: 'Please login to continue'
         })
     }
-    
+
     const user = await getUser(req.headers.authorization)
     if(!user) {
         return res.status(403).json({
