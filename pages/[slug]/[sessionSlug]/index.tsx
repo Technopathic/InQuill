@@ -34,7 +34,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
   useEffect(() => {
     const getUserAsync = async() => {
-      const auth = await getUser()
+      const auth = getUser()
       console.log(auth)
       setUser(auth)
     }
