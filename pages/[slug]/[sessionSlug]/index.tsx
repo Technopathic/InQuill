@@ -27,11 +27,12 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   useEffect(() => {
     async function getVotes() {
       const questionVotes = await getQuestionVotes()
-      dispatch({ type: 'GET_QUESTION_VOTES', value: questionVotes })
+      console.log(questionVotes)
+      //dispatch({ type: 'GET_QUESTION_VOTES', value: questionVotes })
     }
 
     getVotes()
-    
+
     if(props.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
     } else {
@@ -165,8 +166,8 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 }
 
 export async function getServerSideProps(context: any) {
-  const token = await getUserByCookie(context.req)
-  console.log(token)
+  const { user } = await getUserByCookie(context.req)
+  console.log(user)
   const data = await getQuestions(context.query.sessionSlug)
   return { props: { session: data.session, questions: data.questions, error: data.error} }
 }

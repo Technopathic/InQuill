@@ -8,8 +8,6 @@ const SUPABASE_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW
 export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY)
 
 export const setAuthCookie = async(event: AuthChangeEvent, session: Session | null) => {
-    console.log(event);
-    console.log(session);
     return await axios({
         method: 'POST',
         url: `${process.env.API_URL}/auth`,
