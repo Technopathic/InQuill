@@ -126,7 +126,7 @@ export const isAdmin = async(userId: string) => {
 }
 
 export const getUser = async(req: NextApiRequest) => {
-    const user = supabase.auth.api.getUserByCookie(req);
+    const user = await supabase.auth.api.getUserByCookie(req);
 
     return user
 }
