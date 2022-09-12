@@ -39,7 +39,7 @@ export default async function handler(
 
     if(!req.headers.authorization) {
         return res.status(403).json({
-            error: 'Please login to continue'
+            error: 'Missing authorization token'
         })
     }
 
