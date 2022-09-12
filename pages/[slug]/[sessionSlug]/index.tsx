@@ -17,7 +17,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('Europe/Helsinki');
 
-const REALTIME_URL = 'wss://qepbbrribkrkypytwssf.supabase.co/realtime/v1'
+const REALTIME_URL = 'wss://cyufqonumuemewhjacqa.supabase.co/realtime/v1'
 const socket = new RealtimeClient(REALTIME_URL)
 socket.connect()
 
