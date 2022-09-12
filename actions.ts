@@ -30,22 +30,28 @@ export const getQuestions = async(slug: string) => {
 }
 
 export const storeQuestion = async(sessionSlug: string, content: string, author: string) => {
-    const data = await axios({
-        method: 'POST',
-        url: `${process.env.API_URL}/postQuestion` || '',
-        data: JSON.stringify({
-            sessionSlug,
-            content,
-            author
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(res => res.data)
-    .catch(error => error.response.data)
-
-    return data
+    const auth = localStorage.getItem('supabase.auth.token')
+    if(auth) {
+        const currentSession = JSON.parse(auth)
+        const data = await axios({
+            method: 'POST',
+            url: `${process.env.API_URL}/postQuestion` || '',
+            data: JSON.stringify({
+                sessionSlug,
+                content,
+                author
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${currentSession.token_type} ${currentSession.access_token}`
+            }
+        })
+        .then(res => res.data)
+        .catch(error => error.response.data)
+    
+        return data
+    }
+    
 }
 
 export const storeQuestionVote = async(id: number) => {
