@@ -44,9 +44,15 @@ export default async function handler(
     }
 
     const user = await getUser(req.headers.authorization)
-    if(user.error || !user.user) {
+    if(user.error) {
         return res.status(403).json({
-            error: 'Please login to continue'
+            error: user.error
+        })
+    }
+
+    if(!user.user) {
+        return res.status(404).json({
+            error: 'User not found.'
         })
     }
 
