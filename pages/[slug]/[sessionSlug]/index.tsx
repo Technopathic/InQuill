@@ -149,9 +149,11 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
           {questions.map((question, i) => (
             <article key={i} className="flex bg-white rounded-xl mt-8 p-4">
                 <div className="flex flex-col items-center pr-4">
-                    <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-teal-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
-                      <FiChevronUp size={32} />
-                    </div>
+                    {user && 
+                      <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-teal-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
+                        <FiChevronUp size={32} />
+                      </div>
+                    }
                     <p className="text-2xl mb-2">{question.votes}</p>
                     <span className="text-sm">Votes</span>
                 </div>
