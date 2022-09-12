@@ -127,6 +127,9 @@ export const isAdmin = async(userId: string) => {
 
 export const getUser = async(token: string) => {
     const { data: user, error } = await supabase.auth.api.getUser(token)
+    if(error) {
+        return { error: `Please login to continue: ${JSON.stringify(error)}` }
+    }
 
-    return user
+    return { user }
 }

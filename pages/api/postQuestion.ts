@@ -44,7 +44,7 @@ export default async function handler(
     }
 
     const user = await getUser(req.headers.authorization)
-    if(!user) {
+    if(user.error || !user.user) {
         return res.status(403).json({
             error: 'Please login to continue'
         })
@@ -113,7 +113,7 @@ export default async function handler(
         author: questionAuthor || 'Anonymous',
         votes: 0,
         content: questionContent,
-        userId: user.id
+        userId: user.user.id
     }
 
     const question = await storeQuestion(questionData);
@@ -127,7 +127,7 @@ export default async function handler(
         ...questionData,
         id: question.id,
         created_at: question.created_at,
-        userId: user.id
+        userId: user.user.id
     }
 
     return res.status(200).json({
