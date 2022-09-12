@@ -21,8 +21,8 @@ const Home: NextPage<types.EventsPage> = (props) => {
   }, [dispatch, props])
 
   useEffect(() => {
-   console.log(router.query)
-  }, [])
+   console.log(router)
+  }, [router])
   
   return (
     <>
