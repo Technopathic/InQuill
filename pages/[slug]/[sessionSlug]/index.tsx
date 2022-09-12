@@ -197,7 +197,9 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
                         </div>
                       </div>
                     ) : (
-                      <div></div>
+                      <div className="flex items-center">
+                        {question.answered && 'Answered'}
+                      </div>
                     )}
                   </div>
                   <p className="text-xl my-1">{question.content}</p>
