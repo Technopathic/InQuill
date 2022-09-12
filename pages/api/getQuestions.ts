@@ -27,6 +27,7 @@ export default async function handler(
         const user = await getUser(req.headers.authorization)
         if(user.user) {
             const { data: voteData, error: voteError } = await getQuestionVotes(user.user.id)
+            console.warn({ voteData })
             if(voteData) {
                 for (const vote of voteData) {
                     votes.push(vote.questionId)
@@ -57,7 +58,7 @@ export default async function handler(
     }
 
     const { data, error }= await getQuestions(session.slug);
-
+    console.warn(votes)
 
     return res.status(200).json({
         session,

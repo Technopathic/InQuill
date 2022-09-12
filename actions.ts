@@ -26,6 +26,7 @@ export const getQuestions = async(slug: string) => {
     .then(res => res.data)
     .catch(error => error.response.data)
 
+    console.warn({ data })
     return data
 }
 
