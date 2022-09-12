@@ -1,6 +1,9 @@
 import axios from 'axios'
 import { createClient } from '@supabase/supabase-js'
-const supabase = createClient(process.env.SUPABASE_URL || '', process.env.SUPABASE_PUBLIC_KEY || '')
+
+const SUPABASE_URL = "https://qepbbrribkrkypytwssf.supabase.co"
+const SUPABASE_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzOTE4MTc3MywiZXhwIjoxOTU0NzU3NzczfQ.-8sYelhGVpB5qLchFObwTg9l6lCMsuizj6wq_cbZzRk"
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY)
 
 export const getEvents = async() => {
     const data = await axios.get(`${process.env.API_URL}/getEvents`)
