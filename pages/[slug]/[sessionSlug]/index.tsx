@@ -27,8 +27,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   useEffect(() => {
     async function getVotes() {
       const questionVotes = await getQuestionVotes()
-      console.log(questionVotes)
-      //dispatch({ type: 'GET_QUESTION_VOTES', value: questionVotes })
+      dispatch({ type: 'GET_QUESTION_VOTES', value: questionVotes })
     }
 
     getVotes()

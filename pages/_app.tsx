@@ -21,7 +21,7 @@ const App = ({ Component, pageProps } : AppProps) => {
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setAuthCookie(event, session);
+      //setAuthCookie(event, session);
     });
     
     const token = router.asPath.includes('#')
