@@ -49,7 +49,6 @@ const App = ({ Component, pageProps } : AppProps) => {
       <Provider createStore={store}>
         <div className="flex flex-col justify-between min-h-screen text-gray-700 dark:text-gray-50">
           <Component {...pageProps} />
-          {!excludeFooter.includes(router.pathname) && <Footer />}
           <Snack />
         </div>
       </Provider>

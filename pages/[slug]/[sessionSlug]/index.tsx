@@ -200,7 +200,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
           {questions.map((question, i) => (
             <article key={i} className="flex bg-white rounded-xl mt-8 p-4">
                 <div className="flex flex-col items-center pr-6">
-                    {user && 
+                    {(user && votes) && 
                       <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-teal-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
                         <FiChevronUp size={32} />
                       </div>
