@@ -23,7 +23,10 @@ const Home: NextPage<types.EventsPage> = (props) => {
   useEffect(() => {
     const token = router.asPath.split("access_token=").pop()
     if(token) {
+      console.log(token)
+
       dispatch({ type: 'SET_TOKEN', value: token })
+      console.log(redirect)
       if(redirect) {
         router.push(redirect)
       }
