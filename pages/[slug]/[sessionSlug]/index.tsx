@@ -33,10 +33,13 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }, [dispatch, props])
 
   useEffect(() => {
-    async () => {
+    const getUserAsync = async() => {
       const auth = await getUser()
+      console.log(auth)
       setUser(auth)
     }
+
+    getUserAsync()
   }, [])
 
   if(!session) {
