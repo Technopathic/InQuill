@@ -7,7 +7,7 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 
 import * as types from '../../../types'
-import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser } from '../../../actions'
+import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getUserByCookie } from '../../../actions'
 
 import { FiChevronUp } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
@@ -158,7 +158,8 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 }
 
 export async function getServerSideProps(context: any) {
-  const data = await getQuestions(context.query.sessionSlug)
+  const token = await getUserByCookie(context.req)
+  const data = await getQuestions(context.query.sessionSlug, token.token)
   return { props: { session: data.session, questions: data.questions, votes: data.votes, error: data.error} }
 }
 

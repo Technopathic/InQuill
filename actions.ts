@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { createClient } from '@supabase/supabase-js'
+import { NextApiRequest } from 'next'
 
 const SUPABASE_URL = "https://qepbbrribkrkypytwssf.supabase.co"
 const SUPABASE_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzOTE4MTc3MywiZXhwIjoxOTU0NzU3NzczfQ.-8sYelhGVpB5qLchFObwTg9l6lCMsuizj6wq_cbZzRk"
@@ -21,8 +22,19 @@ export const getSessions = async(slug: string) => {
     return data
 }
 
-export const getQuestions = async(slug: string) => {
-    const data = await axios.get(`${process.env.API_URL}/getQuestions?sessionSlug=${slug}`)
+export const getQuestions = async(slug: string, token: string | null) => {
+    const headers: any = {
+        'Content-Type': 'application/json'
+    }
+
+    if(token) {
+        headers['Authorization'] = token
+    }
+    const data = await axios({
+        method: 'GET',
+        url: `${process.env.API_URL}/getQuestions?sessionSlug=${slug}`,
+        headers
+    })
     .then(res => res.data)
     .catch(error => error.response.data)
 
@@ -77,3 +89,14 @@ export const storeQuestionVote = async(id: number) => {
 export const signIn = async(provider: 'google' | 'twitter') => await supabase.auth.signIn({ provider })
 
 export const getUser = () => supabase.auth.user()
+
+export const getUserByCookie = async (req: NextApiRequest) => await supabase.auth.api.getUserByCookie(req)
+
+/*
+export const setAuth = () => {
+    const auth = localStorage.getItem('supabase.auth.token')
+    if(auth) {
+        const { currentSession }= JSON.parse(auth)
+        supabase.auth.api.setAuthCookie()
+    }
+}*/
