@@ -143,3 +143,7 @@ export const getUser = async(token: string) => {
 
     return { user }
 }
+
+export const setAuth = async(req: NextApiRequest, res: NextApiResponse) => {
+    supabase.auth.api.setAuthCookie(req, res)
+}

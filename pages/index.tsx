@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { useStore } from '../store'
 
 import * as types from '../types'
-import { getEvents, getUser } from '../actions'
+import { getEvents, getUser, onAuthStateChanged } from '../actions'
 
 const Home: NextPage<types.EventsPage> = (props) => {
   const router = useRouter()
@@ -20,14 +20,6 @@ const Home: NextPage<types.EventsPage> = (props) => {
     }
   }, [dispatch, props])
 
-  useEffect(() => {
-    const token = router.asPath.includes('#')
-    if(token) {
-      getUser()
-      window.history.go(-2)
-    }
-  }, [router])
-  
   return (
     <>
       <header className="w-full h-40 flex flex-col justify-center items-center">
