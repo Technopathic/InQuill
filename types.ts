@@ -23,6 +23,7 @@ export type QuestionType = {
     content: string;
     created_at: string;
     userId: string;
+    answered: boolean;
 }
 
 export type QuestionData = {
@@ -46,9 +47,20 @@ export type State = {
     questions: QuestionType[];
     snack: Snack;
     votes: number[];
+    isAdmin: boolean;
 }
 
-export type ActionType = 'GET_EVENTS' | 'GET_SESSIONS' | 'GET_QUESTIONS' | 'GET_QUESTION_VOTES' | 'STORE_QUESTION' | 'STORE_QUESTION_VOTE' | 'SET_SNACK';
+export type ActionType = 
+    'GET_EVENTS' | 
+    'GET_SESSIONS' | 
+    'GET_QUESTIONS' | 
+    'GET_QUESTION_VOTES' | 
+    'STORE_QUESTION' | 
+    'STORE_QUESTION_VOTE' | 
+    'DELETE_QUESTION' | 
+    'ANSWER_QUESTION' | 
+    'SET_SNACK' |
+    'SET_ADMIN';
 
 export type Action = {
     type: ActionType;

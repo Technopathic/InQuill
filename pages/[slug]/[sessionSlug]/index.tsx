@@ -7,9 +7,9 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 
 import * as types from '../../../types'
-import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getUserByCookie, getQuestionVotes } from '../../../actions'
+import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion } from '../../../actions'
 
-import { FiChevronUp } from "react-icons/fi";
+import { FiChevronUp, FiTrash, FiCheck } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { SiTwitter } from "react-icons/si"
 
@@ -18,7 +18,7 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault('Europe/Helsinki');
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
-  const { session, questions, votes }: types.State = useStore()
+  const { session, questions, votes, isAdmin }: types.State = useStore()
   const { dispatch }: types.Dispatch = useStore()
   const questionRef = useRef<HTMLTextAreaElement>(null)
   const authorRef = useRef<HTMLInputElement>(null)
@@ -31,6 +31,13 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
     }
 
     getVotes()
+
+    async function getAdmin() {
+      const admin = await getIsAdmin()
+      dispatch({ type: 'SET_ADMIN', value: admin.success })
+    }
+
+    getAdmin()
 
     if(props.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
@@ -72,6 +79,24 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
     } else {
       dispatch({ type: 'STORE_QUESTION_VOTE', value: response.question })
+    }
+  }
+
+  const handleDeleteQuestion = async(id: number) => {
+    const response = await deleteQuestion(id);
+    if(response.error) {
+      dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
+    } else {
+      dispatch({ type: 'DELETE_QUESTION', value: id })
+    }
+  }
+
+  const handleAnswerQuestion = async(id: number) => {
+    const response = await answerQuestion(id);
+    if(response.error) {
+      dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
+    } else {
+      dispatch({ type: 'ANSWER_QUESTION', value: id })
     }
   }
 
@@ -143,7 +168,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
         <section className="w-full max-w-screen-sm">
           {questions.map((question, i) => (
             <article key={i} className="flex bg-white rounded-xl mt-8 p-4">
-                <div className="flex flex-col items-center pr-4">
+                <div className="flex flex-col items-center pr-6">
                     {user && 
                       <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-teal-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
                         <FiChevronUp size={32} />
@@ -152,8 +177,29 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
                     <p className="text-2xl mb-2">{question.votes}</p>
                     <span className="text-sm">Votes</span>
                 </div>
-                <div>
-                  <span className="text-sm">{question.author}</span>
+                <div className="flex flex-col flex-grow">
+                  <div className="flex justify-between w-full">
+                    <span className="text-sm">{question.author}</span>
+                    {isAdmin ? (
+                      <div className="flex items-center">
+                        {question.answered ? (
+                          <div>
+                            {question.answered && 'Answered'}
+                          </div>
+                        ) :
+                        (
+                          <div className="cursor-pointer" onClick={() => handleAnswerQuestion(question.id)}>
+                            <FiCheck />
+                          </div>
+                        )}
+                        <div className="ml-2 cursor-pointer" onClick={() => handleDeleteQuestion(question.id)}>
+                          <FiTrash />
+                        </div>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
                   <p className="text-xl my-1">{question.content}</p>
                 </div>
             </article>
@@ -165,8 +211,6 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 }
 
 export async function getServerSideProps(context: any) {
-  const { user } = await getUserByCookie(context.req)
-  console.log(user)
   const data = await getQuestions(context.query.sessionSlug)
   return { props: { session: data.session, questions: data.questions, error: data.error} }
 }

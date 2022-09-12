@@ -11,7 +11,10 @@ const actionTypes: Record<string, types.ActionType> = {
     GET_QUESTION_VOTES: 'GET_QUESTION_VOTES',
     STORE_QUESTION: 'STORE_QUESTION',
     STORE_QUESTION_VOTE: 'STORE_QUESTION_VOTE',
-    SET_SNACK: 'SET_SNACK'
+    DELETE_QUESTION: 'DELETE_QUESTION',
+    ANSWER_QUESTION: 'ANSWER_QUESTION',
+    SET_SNACK: 'SET_SNACK',
+    SET_ADMIN: 'SET_ADMIN'
 }
 
 let store: any
@@ -26,7 +29,8 @@ const initialState: types.State  = {
         show: false,
         message: null
     },
-    votes: []
+    votes: [],
+    isAdmin: false
 }
 
 const context = createContext()
@@ -119,6 +123,34 @@ const reducer = (state: types.State, action: types.Action): types.State => {
             }
         }
 
+        case actionTypes.DELETE_QUESTION: {
+            const questions = state.questions
+            for (let i = 0; i < questions.length; i++) {
+                if(questions[i].id === action.value) {
+                    questions.splice(i, 1)
+                }
+            }
+
+            return {
+                ...state,
+                questions
+            }
+        }
+
+        case actionTypes.ANSWER_QUESTION: {
+            const questions = state.questions
+            for (let i = 0; i < questions.length; i++) {
+                if(questions[i].id === action.value) {
+                    questions[i].answered = true
+                }
+            }
+
+            return {
+                ...state,
+                questions
+            }
+        }
+
         case actionTypes.SET_SNACK: {
             const snack = state.snack
             snack.show = action.value.show
@@ -127,6 +159,13 @@ const reducer = (state: types.State, action: types.Action): types.State => {
             return {
                 ...state,
                 snack
+            }
+        }
+
+        case actionTypes.SET_ADMIN: {
+            return {
+                ...state,
+                isAdmin: action.value
             }
         }
         

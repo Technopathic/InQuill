@@ -126,7 +126,8 @@ export default async function handler(
         author: questionAuthor || 'Anonymous',
         votes: 0,
         content: questionContent,
-        userId: user.user.id
+        userId: user.user.id,
+        answered: false
     }
 
     const question = await storeQuestion(questionData);
