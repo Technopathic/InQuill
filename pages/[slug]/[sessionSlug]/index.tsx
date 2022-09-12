@@ -24,6 +24,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   const authorRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    console.log(props.user)
     if(props.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
     } else {
