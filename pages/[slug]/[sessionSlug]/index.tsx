@@ -159,6 +159,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
 export async function getServerSideProps(context: any) {
   const token = await getUserByCookie(context.req)
+  console.log(token)
   const data = await getQuestions(context.query.sessionSlug, token.token)
   return { props: { session: data.session, questions: data.questions, votes: data.votes, error: data.error} }
 }
