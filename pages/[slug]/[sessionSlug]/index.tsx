@@ -36,21 +36,17 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       dispatch({ type: 'GET_QUESTION_VOTES', value: questionVotes.votes })
     }
 
-    getVotes()
-
-    async function getUserAsync() {
-      const auth = getUser()
-      setUser(auth)
-    }
-
-    getUserAsync()
-
     async function getAdmin() {
       const admin = await getIsAdmin()
       dispatch({ type: 'SET_ADMIN', value: admin.success })
     }
 
-    getAdmin()
+    const auth = getUser()
+    if(auth) {
+      setUser(auth)
+      getVotes()
+      getAdmin()
+    }
 
     if(props.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
