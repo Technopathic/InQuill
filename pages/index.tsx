@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { useStore } from '../store'
 
 import * as types from '../types'
-import { getEvents } from '../actions'
+import { getEvents, getUser } from '../actions'
 
 const Home: NextPage<types.EventsPage> = (props) => {
   const router = useRouter()
@@ -21,6 +21,12 @@ const Home: NextPage<types.EventsPage> = (props) => {
   }, [dispatch, props])
 
   useEffect(() => {
+    const getUserAsync = async() => {
+      const auth = getUser()
+      console.log(auth)
+    }
+
+    getUserAsync()
     const token = router.asPath.split("access_token=").pop()
     if(token) {
       window.history.go(-2)
