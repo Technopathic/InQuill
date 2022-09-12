@@ -159,7 +159,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 }
 
 export async function getServerSideProps(context: any) {
-  const user = await getUser(context.req)
+  const user = await getUser()
   const data = await getQuestions(context.query.sessionSlug)
   return { props: { session: data.session, questions: data.questions, error: data.error, user } }
 }

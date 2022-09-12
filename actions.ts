@@ -71,7 +71,7 @@ export const signInWithGoogle = async() => {
 }
 
 export const getUser = async(req: any) => {
-    const { user } = await supabase.auth.api.getUserByCookie(req);
+    const user = supabase.auth.user()
     console.log(user)
     return user
 }
