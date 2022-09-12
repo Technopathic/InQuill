@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { usePanelbear } from '@panelbear/panelbear-nextjs';
 import { useCreateStore, Provider } from '../store'
-import { onAuthStateChanged } from '../actions'
+import { supabase, setAuthCookie } from '../actions'
 
 import Footer from '../components/Footer'
 import Snack from '../components/Snack'
@@ -20,7 +20,10 @@ const App = ({ Component, pageProps } : AppProps) => {
   usePanelbear(process.env.PANEL_BEAR_ID || '');
 
   useEffect(() => {
-    const { data: authListener } = onAuthStateChanged()
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      setAuthCookie(event, session);
+    });
+    
     const token = router.asPath.includes('#')
     if(token) {
       window.history.go(-2)

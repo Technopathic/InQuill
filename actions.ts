@@ -5,7 +5,7 @@ import { AuthChangeEvent, Session } from '@supabase/supabase-js'
 
 const SUPABASE_URL = "https://qepbbrribkrkypytwssf.supabase.co"
 const SUPABASE_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzOTE4MTc3MywiZXhwIjoxOTU0NzU3NzczfQ.-8sYelhGVpB5qLchFObwTg9l6lCMsuizj6wq_cbZzRk"
-const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY)
+export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY)
 
 export const setAuthCookie = async(event: AuthChangeEvent, session: Session | null) => {
     console.log(event);
@@ -16,14 +16,6 @@ export const setAuthCookie = async(event: AuthChangeEvent, session: Session | nu
         headers: { 'Content-Type': 'application/json' },
         data: JSON.stringify({ event, session }),
     })
-    .then(res => res.data)
-    .catch(error => error.response.data);
-}
-
-export const onAuthStateChanged = () => {
-    return supabase.auth.onAuthStateChange((event, session) => {
-        setAuthCookie(event, session);
-    });
 }
 
 export const getEvents = async() => {
