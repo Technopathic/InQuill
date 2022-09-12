@@ -78,6 +78,7 @@ const reducer = (state: types.State, action: types.Action): types.State => {
         }
 
         case actionTypes.GET_QUESTIONS: {
+            console.log(action.value)
             return {
                 ...state,
                 session: action.value.session,
