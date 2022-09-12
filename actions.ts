@@ -32,7 +32,9 @@ export const getQuestions = async(slug: string) => {
 export const storeQuestion = async(sessionSlug: string, content: string, author: string) => {
     const auth = localStorage.getItem('supabase.auth.token')
     if(auth) {
+        console.log(auth)
         const currentSession = JSON.parse(auth)
+        console.log(currentSession);
         const data = await axios({
             method: 'POST',
             url: `${process.env.API_URL}/postQuestion` || '',
