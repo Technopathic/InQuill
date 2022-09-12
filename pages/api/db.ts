@@ -36,6 +36,10 @@ export const getQuestion = async(id: number) => {
     return data[0]
 }
 
+export const getQuestionVotes = async(userId: string) => await supabase.from('questionVotes').select('questionId').eq('userId', userId)
+
+export const getQuestionVote = async(questionId: number, userId: string) => await supabase.from('questionVotes').select('id').eq('userId', userId).eq('questionId', questionId)
+
 export const storeQuestion = async(questionData: QuestionData) => {
     const { data, error } =  await supabase.from('questions').insert(questionData)
     if (error) {
@@ -45,7 +49,7 @@ export const storeQuestion = async(questionData: QuestionData) => {
     return data[0]
 }
 
-export const storeQuestionVote = async(questionId: number, userId: number | null) => {
+export const storeQuestionVote = async(questionId: number, userId: string | null) => {
     const { data, error } = await supabase.from('questionVotes').insert({ questionId, userId })
     if (error) {
         return { error: `Unable to store vote: ${error}` }
@@ -102,7 +106,6 @@ export const banUser = async(userId: string) => {
     if (error) {
         return { error: `Unable to ban user: ${error}` }
     }
-
    
     return data[0]
 }
@@ -128,7 +131,7 @@ export const isAdmin = async(userId: string) => {
 export const getUser = async(token: string) => {
     const { data: user, error } = await supabase.auth.api.getUser(token)
     if(error) {
-        return { error: `Please login to continue: ${JSON.stringify(error)} ${token}` }
+        return { error: `Please login to continue: ${JSON.stringify(error)}` }
     }
 
     return { user }

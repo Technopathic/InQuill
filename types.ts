@@ -73,5 +73,6 @@ export type SessionsPage = {
 export type QuestionsPage = {
     session: SessionType;
     questions: QuestionType[];
+    votes: number[];
     error: string;
 }

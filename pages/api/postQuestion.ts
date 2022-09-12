@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession, storeQuestion, getUser } from './db'
+import { getSession, storeQuestion, getUser, isBanned } from './db'
 import { QuestionType } from '../../types'
 
 type ResponseOptions = {
@@ -53,6 +53,13 @@ export default async function handler(
     if(!user.user) {
         return res.status(404).json({
             error: 'User not found.'
+        })
+    }
+
+    const checkBan = await isBanned(user.user.id)
+    if(checkBan) {
+        return res.status(403).json({
+            error: 'You cannot post a question.'
         })
     }
 

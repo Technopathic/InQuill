@@ -72,7 +72,8 @@ const reducer = (state: types.State, action: types.Action): types.State => {
             return {
                 ...state,
                 event: action.value.event,
-                sessions: action.value.sessions
+                sessions: action.value.sessions,
+                votes: action.value.votes
             }
         }
 

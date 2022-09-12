@@ -32,9 +32,7 @@ export const getQuestions = async(slug: string) => {
 export const storeQuestion = async(sessionSlug: string, content: string, author: string) => {
     const auth = localStorage.getItem('supabase.auth.token')
     if(auth) {
-        console.log(auth)
         const { currentSession }= JSON.parse(auth)
-        console.log(currentSession);
         const data = await axios({
             method: 'POST',
             url: `${process.env.API_URL}/postQuestion` || '',
@@ -45,7 +43,7 @@ export const storeQuestion = async(sessionSlug: string, content: string, author:
             }),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentSession.access_token}`
+                'Authorization': currentSession.access_token
             }
         })
         .then(res => res.data)
@@ -57,17 +55,22 @@ export const storeQuestion = async(sessionSlug: string, content: string, author:
 }
 
 export const storeQuestionVote = async(id: number) => {
-    const data = await axios.post(`${process.env.API_URL}/postQuestionVote` || '', {
-        id
-    }, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(res => res.data)
-    .catch(error => error.response.data)
-
-    return data
+    const auth = localStorage.getItem('supabase.auth.token')
+    if(auth) {
+        const { currentSession }= JSON.parse(auth)
+        const data = await axios.post(`${process.env.API_URL}/postQuestionVote` || '', {
+            id
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': currentSession.access_token
+            }
+        })
+        .then(res => res.data)
+        .catch(error => error.response.data)
+    
+        return data
+    }
 }
 
 export const signInWithGoogle = async() => {
@@ -80,6 +83,5 @@ export const signInWithGoogle = async() => {
 
 export const getUser = () => {
     const user = supabase.auth.user()
-    console.log(user)
     return user
 }

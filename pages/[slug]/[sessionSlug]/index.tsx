@@ -28,14 +28,13 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
     if(props.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
     } else {
-      dispatch({ type: 'GET_QUESTIONS', value: {  session: props.session, questions: props.questions } })
+      dispatch({ type: 'GET_QUESTIONS', value: {  session: props.session, questions: props.questions, votes: props.votes } })
     }
   }, [dispatch, props])
 
   useEffect(() => {
     const getUserAsync = async() => {
       const auth = getUser()
-      console.log(auth)
       setUser(auth)
     }
 
@@ -72,7 +71,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   const handleSignIn = async(provider: string) => {
     switch(provider) {
       case 'Google': {
-        const { user, session, error } = await signInWithGoogle()
+        await signInWithGoogle()
         break
       }
 
@@ -170,7 +169,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
 export async function getServerSideProps(context: any) {
   const data = await getQuestions(context.query.sessionSlug)
-  return { props: { session: data.session, questions: data.questions, error: data.error} }
+  return { props: { session: data.session, questions: data.questions, votes: data.votes, error: data.error} }
 }
 
 export default Questions
