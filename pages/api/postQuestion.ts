@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession, storeQuestion } from './db'
+import { getSession, getUser, storeQuestion } from './db'
 import { QuestionType } from '../../types'
 
 type ResponseOptions = {
@@ -36,6 +36,12 @@ export default async function handler(
     }
 
     const { sessionSlug, content, author } = req.body
+    const user = await getUser(req)
+    if(!user.user) {
+        return res.status(403).json({
+            error: 'Please login to continue'
+        })
+    }
 
     if(!sessionSlug || typeof sessionSlug !== 'string') {
         return res.status(401).json({
@@ -99,7 +105,8 @@ export default async function handler(
         sessionSlug: session.slug,
         author: questionAuthor || 'Anonymous',
         votes: 0,
-        content: questionContent
+        content: questionContent,
+        userId: user.user.id
     }
 
     const question = await storeQuestion(questionData);
@@ -113,7 +120,7 @@ export default async function handler(
         ...questionData,
         id: question.id,
         created_at: question.created_at,
-        userId: question.id
+        userId: user.user.id
     }
 
     return res.status(200).json({

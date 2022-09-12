@@ -21,13 +21,7 @@ const Home: NextPage<types.EventsPage> = (props) => {
   }, [dispatch, props])
 
   useEffect(() => {
-    const getUserAsync = async() => {
-      const auth = getUser()
-      console.log(auth)
-    }
-
-    getUserAsync()
-    const token = router.asPath.split("access_token=").pop()
+    const token = router.asPath.includes('#')
     if(token) {
       window.history.go(-2)
     }

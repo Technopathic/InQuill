@@ -22,7 +22,7 @@ export type QuestionType = {
     votes: number;
     content: string;
     created_at: string;
-    userId?: number;
+    userId: string;
 }
 
 export type QuestionData = {
@@ -30,7 +30,7 @@ export type QuestionData = {
     author: string;
     votes: number;
     content: string;
-    userId?: number;
+    userId: string;
 }
 
 export type Snack = {
