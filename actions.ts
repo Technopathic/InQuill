@@ -70,7 +70,7 @@ export const signInWithGoogle = async() => {
     return { user, session, error }
 }
 
-export const getUser = async() => {
+export const getUser = () => {
     const user = supabase.auth.user()
     console.log(user)
     return user
