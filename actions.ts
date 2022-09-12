@@ -8,6 +8,8 @@ const SUPABASE_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW
 const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY)
 
 export const setAuthCookie = async(event: AuthChangeEvent, session: Session | null) => {
+    console.log(event);
+    console.log(session);
     return await axios({
         method: 'POST',
         url: `${process.env.API_URL}/auth`,
@@ -109,13 +111,3 @@ export const signIn = async(provider: 'google' | 'twitter') => await supabase.au
 export const getUser = () => supabase.auth.user()
 
 export const getUserByCookie = async (req: NextApiRequest) => await supabase.auth.api.getUserByCookie(req)
-
-
-/*
-export const setAuth = () => {
-    const auth = localStorage.getItem('supabase.auth.token')
-    if(auth) {
-        const { currentSession }= JSON.parse(auth)
-        supabase.auth.api.setAuthCookie()
-    }
-}*/

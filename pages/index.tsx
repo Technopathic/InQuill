@@ -49,7 +49,6 @@ const Home: NextPage<types.EventsPage> = (props) => {
 export async function getServerSideProps() {
   const data = await getEvents()
   return { props: { events: data.events, error: data.error } }
-  //return { props: { data: { events: [], error: null } }}
 }
 
 export default Home
