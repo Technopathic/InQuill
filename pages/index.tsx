@@ -21,8 +21,10 @@ const Home: NextPage<types.EventsPage> = (props) => {
   }, [dispatch, props])
 
   useEffect(() => {
-   console.log(router)
-  }, [router])
+    const token = router.asPath.split("access_token=").pop()
+    dispatch({ type: 'SET_TOKEN', value: token })
+    router.back()
+  }, [dispatch, router])
   
   return (
     <>
