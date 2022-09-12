@@ -43,7 +43,7 @@ export const storeQuestion = async(sessionSlug: string, content: string, author:
             }),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `${currentSession.token_type} ${currentSession.access_token}`
+                'Authorization': `Bearer ${currentSession.access_token}`
             }
         })
         .then(res => res.data)
