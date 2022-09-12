@@ -33,7 +33,7 @@ export const storeQuestion = async(sessionSlug: string, content: string, author:
     const auth = localStorage.getItem('supabase.auth.token')
     if(auth) {
         console.log(auth)
-        const currentSession = JSON.parse(auth)
+        const { currentSession }= JSON.parse(auth)
         console.log(currentSession);
         const data = await axios({
             method: 'POST',
