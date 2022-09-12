@@ -19,6 +19,7 @@ dayjs.tz.setDefault('Europe/Helsinki');
 
 const REALTIME_URL = 'wss://qepbbrribkrkypytwssf.supabase.co/realtime/v1'
 const socket = new RealtimeClient(REALTIME_URL)
+socket.connect()
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
   const { session, questions, votes, isAdmin }: types.State = useStore()
@@ -61,7 +62,6 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       }
     }
 
-    socket.connect()
     const channel = socket.channel('realtime:public:questions')
     channel.on('INSERT', async() => await handleGetQuestions())
     channel.on('UPDATE', async() => await handleGetQuestions())
