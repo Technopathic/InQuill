@@ -9,7 +9,7 @@ import { getEvents } from '../actions'
 
 const Home: NextPage<types.EventsPage> = (props) => {
   const router = useRouter()
-  const { events, redirect }: types.State = useStore()
+  const { events }: types.State = useStore()
   const { dispatch }: types.Dispatch = useStore()
 
   useEffect(() => {
@@ -23,15 +23,9 @@ const Home: NextPage<types.EventsPage> = (props) => {
   useEffect(() => {
     const token = router.asPath.split("access_token=").pop()
     if(token) {
-      console.log(token)
-
-      dispatch({ type: 'SET_TOKEN', value: token })
-      console.log(redirect)
-      if(redirect) {
-        router.push(redirect)
-      }
+      window.history.go(-2)
     }
-  }, [dispatch, redirect, router])
+  }, [router])
   
   return (
     <>

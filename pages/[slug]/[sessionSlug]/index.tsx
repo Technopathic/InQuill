@@ -18,7 +18,6 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault('Europe/Helsinki');
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
-  const router = useRouter()
   const { session, questions, votes }: types.State = useStore()
   const { dispatch }: types.Dispatch = useStore()
   const questionRef = useRef<HTMLTextAreaElement>(null)
@@ -60,7 +59,6 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }
 
   const handleSignIn = async(provider: string) => {
-    dispatch({ type: 'SET_REDIRECT', value: router.asPath })
     switch(provider) {
       case 'Google': {
         const { user, session, error } = await signInWithGoogle()

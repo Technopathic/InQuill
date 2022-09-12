@@ -10,9 +10,7 @@ const actionTypes: Record<string, types.ActionType> = {
     GET_QUESTIONS: 'GET_QUESTIONS',
     STORE_QUESTION: 'STORE_QUESTION',
     STORE_QUESTION_VOTE: 'STORE_QUESTION_VOTE',
-    SET_SNACK: 'SET_SNACK',
-    SET_TOKEN: 'SET_TOKEN',
-    SET_REDIRECT: 'SET_REDIRECT'
+    SET_SNACK: 'SET_SNACK'
 }
 
 let store: any
@@ -27,9 +25,7 @@ const initialState: types.State  = {
         show: false,
         message: null
     },
-    votes: [],
-    token: null,
-    redirect: null
+    votes: []
 }
 
 const context = createContext()
@@ -122,20 +118,6 @@ const reducer = (state: types.State, action: types.Action): types.State => {
             return {
                 ...state,
                 snack
-            }
-        }
-
-        case actionTypes.SET_TOKEN: {
-            return {
-                ...state,
-                token: action.value
-            }
-        }
-
-        case actionTypes.SET_REDIRECT: {
-            return {
-                ...state,
-                redirect: action.value
             }
         }
         
