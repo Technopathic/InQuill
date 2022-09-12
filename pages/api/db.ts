@@ -38,7 +38,14 @@ export const getQuestion = async(id: number) => {
 
 export const getQuestionVotes = async(userId: string) => await supabase.from('questionVotes').select('questionId').eq('userId', userId)
 
-export const getQuestionVote = async(questionId: number, userId: string) => await supabase.from('questionVotes').select('id').eq('userId', userId).eq('questionId', questionId)
+export const getQuestionVote = async(questionId: number, userId: string) => {
+    const { data, error } = await supabase.from('questionVotes').select('id').eq('userId', userId).eq('questionId', questionId)
+    if (error) {
+        return { error: `Unable to store question vote: ${JSON.stringify(error)}` }
+    }
+
+    return data[0]
+}
 
 export const storeQuestion = async(questionData: QuestionData) => {
     const { data, error } =  await supabase.from('questions').insert(questionData)

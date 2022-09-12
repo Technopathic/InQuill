@@ -23,8 +23,7 @@ const Home: NextPage<types.EventsPage> = (props) => {
   useEffect(() => {
     const token = router.asPath.includes('#')
     if(token) {
-      const user = getUser()
-      console.log(user)
+      getUser()
       window.history.go(-2)
     }
   }, [router])
