@@ -68,4 +68,9 @@ export const signInWithGoogle = async() => {
     })
 
     return { user, session, error }
-  }
+}
+
+export const getUser = async(req: any) => {
+    const { user } = await supabase.auth.api.getUserByCookie(req);
+    return user
+}
