@@ -1,14 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getQuestionVotes, getUser } from './db'
 
+type ResponseOptions = {
+    body: 'OK';
+}
+
 type ResponseData = {
     votes: number[];
 }
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<ResponseData>
+    res: NextApiResponse<ResponseOptions | ResponseData>
 ) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE');
+
+    if(req.method === 'OPTIONS') {
+        return res.status(200).json(({
+            body: 'OK'
+        }))
+    }
+
     const votes: number[] = []
 
     if (req.method !== 'GET') {
