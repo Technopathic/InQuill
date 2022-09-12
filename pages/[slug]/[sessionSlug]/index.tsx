@@ -7,7 +7,7 @@ import timezone from 'dayjs/plugin/timezone'
 import { RealtimeClient } from '@supabase/realtime-js'
 
 import * as types from '../../../types'
-import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion } from '../../../actions'
+import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion, SUPABASE_PUBLIC_KEY } from '../../../actions'
 
 import { FiChevronUp, FiTrash, FiCheck } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
@@ -17,8 +17,8 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('Europe/Helsinki');
 
-const REALTIME_URL = 'wss://cyufqonumuemewhjacqa.supabase.co/realtime/v1'
-const socket = new RealtimeClient(REALTIME_URL)
+const REALTIME_URL = 'wss://qepbbrribkrkypytwssf.supabase.co/realtime/v1'
+const socket = new RealtimeClient(REALTIME_URL,  { params: { apikey: SUPABASE_PUBLIC_KEY }})
 socket.connect()
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
@@ -71,6 +71,10 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       .receive('ok', () => console.log('Connecting'))
       .receive('error', () => console.log('Failed'))
       .receive('timeout', () => console.log('Waiting...'))
+
+    return (() => {
+      socket.disconnect()
+    })
   }, [session, dispatch])
 
   useEffect(() => {
