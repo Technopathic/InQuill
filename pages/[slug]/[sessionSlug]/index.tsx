@@ -21,7 +21,7 @@ dayjs.tz.setDefault('Europe/Helsinki');
 const REALTIME_URL = 'wss://qepbbrribkrkypytwssf.supabase.co/realtime/v1'
 const socket = new RealtimeClient(REALTIME_URL,  { params: { apikey: SUPABASE_PUBLIC_KEY }})
 
-let publicSchema = null
+let channel = null
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
   const { session, questions, votes, isAdmin }: types.State = useStore()
@@ -71,8 +71,8 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }
 
   const createSubscription = () => {
-    const channel = socket.channel('realtime:public:questions', { user_token: SUPABASE_PUBLIC_KEY })
-    channel.on('INSERT', async() => await handleGetQuestions())
+    channel = socket.channel('realtime:*')
+    channel.on('*', (e:any) => { console.log(e)})
     channel.on('UPDATE', async() => await handleGetQuestions())
     channel
       .subscribe()
