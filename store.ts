@@ -11,7 +11,7 @@ const actionTypes: Record<string, types.ActionType> = {
     GET_QUESTION_VOTES: 'GET_QUESTION_VOTES',
     STORE_QUESTION: 'STORE_QUESTION',
     STORE_QUESTION_VOTE: 'STORE_QUESTION_VOTE',
-    UPDATE_QUESTION_VOTE: 'UPDATE_QUESTION_VOTE',
+    UPDATE_QUESTION: 'UPDATE_QUESTION',
     DELETE_QUESTION: 'DELETE_QUESTION',
     ANSWER_QUESTION: 'ANSWER_QUESTION',
     SET_SNACK: 'SET_SNACK',
@@ -84,7 +84,6 @@ const reducer = (state: types.State, action: types.Action): types.State => {
         }
 
         case actionTypes.GET_QUESTIONS: {
-            console.log(action.value)
             return {
                 ...state,
                 session: action.value.session,
@@ -99,9 +98,7 @@ const reducer = (state: types.State, action: types.Action): types.State => {
             }
         }
 
-        case actionTypes.STORE_QUESTION: {
-            console.log(action.value);
-            
+        case actionTypes.STORE_QUESTION: {            
             const questions = state.questions
             questions.unshift(action.value)
 
@@ -127,11 +124,17 @@ const reducer = (state: types.State, action: types.Action): types.State => {
             }
         }
 
-        case actionTypes.UPDATE_QUESTION_VOTE: {
+        case actionTypes.UPDATE_QUESTION: {
             const questions = state.questions
-            const voteQuestion = questions.find(question => question.id === action.value.id)
-            if(voteQuestion) {
-                voteQuestion.votes = action.value.votes
+            for (let i = 0; i < questions.length; i++) {
+                if(questions[i].id === action.value.id) {
+                    questions[i].votes = action.value.votes
+                    questions[i].answered = action.value.answered
+
+                    if(action.value.archived) {
+                        questions.splice(i, 1)
+                    }
+                }
             }
 
             return {

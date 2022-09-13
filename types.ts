@@ -57,7 +57,7 @@ export type ActionType =
     'GET_QUESTION_VOTES' | 
     'STORE_QUESTION' | 
     'STORE_QUESTION_VOTE' | 
-    'UPDATE_QUESTION_VOTE' |
+    'UPDATE_QUESTION' |
     'DELETE_QUESTION' | 
     'ANSWER_QUESTION' | 
     'SET_SNACK' |
