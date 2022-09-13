@@ -67,6 +67,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }, [])
 
   const handleGetQuestions = async() => {
+    console.log('TEST')
     if(session) {
       const data = await getQuestions(session.slug)
       if(data.error) {
@@ -79,8 +80,8 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
   const createSubscription = () => {
     const channel = socket.channel('realtime:public:questions')
-    channel.on('INSERT', async() => await handleGetQuestions())
-    channel.on('UPDATE', async() => await handleGetQuestions())
+    channel.on('INSERT', handleGetQuestions)
+    channel.on('UPDATE', handleGetQuestions)
     channel
       .subscribe()
       .receive('ok', () => console.log('Connecting'))
