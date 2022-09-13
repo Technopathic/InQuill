@@ -184,7 +184,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
             <p className="mb-2 text-xl">Sign in to ask questions</p>
             <div className="flex">
               <div onClick={() => handleSignIn('google')} className="mx-2 bg-slate-800 text-white uppercase px-6 py-2 rounded select-none cursor-pointer flex items-center"><FcGoogle size={22} className="mr-2"/> Google</div>
-              <div className="mx-2 bg-slate-800 text-white uppercase px-6 py-2 rounded select-none cursor-pointer flex items-center"><SiTwitter size={22} className="mr-2" color="#1DA1F2"/> Twitter</div>
+              <div onClick={() => handleSignIn('twitter')} className="mx-2 bg-slate-800 text-white uppercase px-6 py-2 rounded select-none cursor-pointer flex items-center"><SiTwitter size={22} className="mr-2" color="#1DA1F2"/> Twitter</div>
             </div>
           </div>
         )
