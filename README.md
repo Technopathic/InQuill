@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## What is InQuill?
 
 InQuill is an open-source solution to Live Q&A events and audience engagement. It allows for your audience to ask questions anonymously and non-anonmyously and for these questions to be answered by the speaker or production team. InQuill allows for real-time communication between the audience and the speaker through questions. Moreover, for reach event, you can create multiple Q&A rooms for different speakers concurrently or at different times.
@@ -22,8 +20,9 @@ You may fork this repo for ease of setting up. Then you must deploy your fork vi
 Supabase is used as both a database and for handling authentication. You will need to spin up a new Supabase project and create the necessary tables. You may import these tables via the SQL file (`db-setup.sql`) included. Be sure to also add your Supabase project URL, Public, and Private keys to your Vercel Environment variables as `SUPABASE_URL`, `SUPABASE_PUBLIC_KEY`, `SUPABASE_KEY`, respectively. 
 
 Finally, if you wish to setup Google and Twitter authentication, I highly recommend following the Supabase guides here:
-[Google Auth Setup](https://supabase.com/docs/guides/auth/auth-google)
-[Twitter Auth Setup](https://supabase.com/docs/guides/auth/auth-twitter)
+
+* [Google Auth Setup](https://supabase.com/docs/guides/auth/auth-google)
+* [Twitter Auth Setup](https://supabase.com/docs/guides/auth/auth-twitter)
 
 ## License
 MIT
