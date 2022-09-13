@@ -56,20 +56,14 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
     createSubscription()
     socket.connect()
-
-    return (() => {
-      async() => {
-        await supabase.removeAllSubscriptions()
-        await socket.disconnect()
-      }
-    })
   }, [])
 
   const handleGetQuestions = async() => {
+    console.log('TEST')
     if(session) {
       const data = await getQuestions(session.slug)
       if(data.error) {
-        return;
+        console.log(data.error)
       } else {
         dispatch({ type: 'GET_QUESTIONS', value: {  session: data.session, questions: data.questions } })
       }
@@ -77,9 +71,9 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }
 
   const createSubscription = () => {
-    channel = socket.channel('realtime:public:questions', { user_token: SUPABASE_PUBLIC_KEY })
-    channel.on('INSERT', async() => await handleGetQuestions())
-    channel.on('UPDATE', async() => await handleGetQuestions())
+    channel = socket.channel('realtime:*', { user_token: SUPABASE_PUBLIC_KEY })
+    channel.on('*', (e:any) => { console.log(e)})
+    channel.on('UPDATE', handleGetQuestions)
     channel
       .subscribe()
       .receive('ok', () => console.log('Connecting'))
