@@ -79,8 +79,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
   const createSubscription = () => {
     channel = socket.channel('realtime:public:questions', { user_token: SUPABASE_PUBLIC_KEY })
-    channel.on('*', (e:any) => { console.log(e)})
-    channel.on('*', (e: any) => dispatch({ type: 'STORE_QUESTION', value: {
+    channel.on('INSERT', (e: any) => dispatch({ type: 'STORE_QUESTION', value: {
       id: e.record.id,
       sessionSlug: e.record.sessionSlug,
       author: e.record.author,
@@ -109,7 +108,6 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       if(response.error) {
         dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
       } else {
-        dispatch({ type: 'STORE_QUESTION', value: response.question })
         questionRef.current.value = ''
       }
     }
