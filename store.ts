@@ -99,6 +99,8 @@ const reducer = (state: types.State, action: types.Action): types.State => {
         }
 
         case actionTypes.STORE_QUESTION: {
+            console.log(action.value);
+            
             const questions = state.questions
             questions.unshift(action.value)
 

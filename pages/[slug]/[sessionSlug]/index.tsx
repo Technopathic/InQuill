@@ -80,7 +80,15 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   const createSubscription = () => {
     channel = socket.channel('realtime:public:questions', { user_token: SUPABASE_PUBLIC_KEY })
     channel.on('*', (e:any) => { console.log(e)})
-    channel.on('*', async() => await handleGetQuestions())
+    channel.on('*', (e: any) => dispatch({ type: 'STORE_QUESTION', value: {
+      id: e.record.id,
+      sessionSlug: e.record.sessionSlug,
+      author: e.record.author,
+      content: e.record.content,
+      created_at: e.record.created_at,
+      userId: e.record.userId,
+      answered: e.record.answered
+    }}))
     channel.on('UPDATE', handleGetQuestions)
     channel
       .subscribe()
