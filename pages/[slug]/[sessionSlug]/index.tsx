@@ -71,7 +71,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }
 
   const createSubscription = () => {
-    channel = socket.channel('realtime:*', { user_token: SUPABASE_PUBLIC_KEY })
+    channel = socket.channel('realtime:public:questions', { user_token: SUPABASE_PUBLIC_KEY })
     channel.on('*', (e:any) => { console.log(e)})
     channel.on('UPDATE', handleGetQuestions)
     channel
