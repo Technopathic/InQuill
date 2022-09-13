@@ -11,6 +11,7 @@ const actionTypes: Record<string, types.ActionType> = {
     GET_QUESTION_VOTES: 'GET_QUESTION_VOTES',
     STORE_QUESTION: 'STORE_QUESTION',
     STORE_QUESTION_VOTE: 'STORE_QUESTION_VOTE',
+    UPDATE_QUESTION_VOTE: 'UPDATE_QUESTION_VOTE',
     DELETE_QUESTION: 'DELETE_QUESTION',
     ANSWER_QUESTION: 'ANSWER_QUESTION',
     SET_SNACK: 'SET_SNACK',
@@ -123,6 +124,19 @@ const reducer = (state: types.State, action: types.Action): types.State => {
                 ...state,
                 questions,
                 votes
+            }
+        }
+
+        case actionTypes.UPDATE_QUESTION_VOTE: {
+            const questions = state.questions
+            const voteQuestion = questions.find(question => question.id === action.value.id)
+            if(voteQuestion) {
+                voteQuestion.votes = action.value.votes
+            }
+
+            return {
+                ...state,
+                questions
             }
         }
 
