@@ -211,7 +211,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
             <article key={i} className="flex bg-white rounded-xl mt-8 p-4">
                 <div className="flex flex-col items-center pr-6">
                     {(user && votes) && 
-                      <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-teal-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
+                      <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-orange-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
                         <FiChevronUp size={32} />
                       </div>
                     }
@@ -224,7 +224,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
                     {isAdmin ? (
                       <div className="flex items-center">
                         {question.answered ? (
-                          <div>
+                          <div className="text-sm">
                             {question.answered && 'Answered'}
                           </div>
                         ) :
@@ -238,7 +238,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
                         </div>
                       </div>
                     ) : (
-                      <div className="flex items-center">
+                      <div className="flex items-center text-sm">
                         {question.answered && 'Answered'}
                       </div>
                     )}
