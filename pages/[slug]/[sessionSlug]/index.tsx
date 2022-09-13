@@ -56,6 +56,13 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
     createSubscription()
     socket.connect()
+
+    return(() => {
+      async() => {
+        await supabase.removeAllSubscriptions()
+        await socket.disconnect()
+      }
+    })
   }, [])
 
   const handleGetQuestions = async() => {
