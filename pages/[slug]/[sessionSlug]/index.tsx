@@ -24,7 +24,7 @@ const socket = new RealtimeClient(REALTIME_URL,  { params: { apikey: SUPABASE_PU
 let channel = null
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
-  const { session, questions, votes, isAdmin }: types.State = useStore()
+  const { session, questions, votes, isAdmin, sortQuestions }: types.State = useStore()
   const { dispatch }: types.Dispatch = useStore()
   const questionRef = useRef<HTMLTextAreaElement>(null)
   const authorRef = useRef<HTMLInputElement>(null)
@@ -206,6 +206,12 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       </header>
       <div className="h-px w-full bg-slate-500 max-w-screen-md m-auto" />
       <main className="flex flex-col flex-grow items-center pb-8">
+        <div className="w-full max-w-screen-sm">
+          <select value={sortQuestions} onChange={(e) => dispatch({ type: 'SET_SORT_QUESTIONS', value: e.target.value })}>
+            <option value="latest">Latest</option>
+            <option value="top">Most Votes</option>
+          </select>
+        </div>
         <section className="w-full max-w-screen-sm">
           {questions.map((question, i) => (
             <article key={i} className="flex bg-white rounded-xl mt-8 p-4">

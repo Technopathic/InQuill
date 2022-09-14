@@ -48,6 +48,7 @@ export type State = {
     snack: Snack;
     votes: number[];
     isAdmin: boolean;
+    sortQuestions: 'latest' | 'top';
 }
 
 export type ActionType = 
@@ -61,7 +62,8 @@ export type ActionType =
     'DELETE_QUESTION' | 
     'ANSWER_QUESTION' | 
     'SET_SNACK' |
-    'SET_ADMIN';
+    'SET_ADMIN' |
+    'SET_SORT_QUESTIONS';
 
 export type Action = {
     type: ActionType;

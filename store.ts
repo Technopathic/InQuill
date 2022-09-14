@@ -15,7 +15,8 @@ const actionTypes: Record<string, types.ActionType> = {
     DELETE_QUESTION: 'DELETE_QUESTION',
     ANSWER_QUESTION: 'ANSWER_QUESTION',
     SET_SNACK: 'SET_SNACK',
-    SET_ADMIN: 'SET_ADMIN'
+    SET_ADMIN: 'SET_ADMIN',
+    SET_SORT_QUESTIONS: 'SET_SORT_QUESTIONS'
 }
 
 let store: any
@@ -31,7 +32,8 @@ const initialState: types.State  = {
         message: null
     },
     votes: [],
-    isAdmin: false
+    isAdmin: false,
+    sortQuestions: 'latest'
 }
 
 const context = createContext()
@@ -84,10 +86,23 @@ const reducer = (state: types.State, action: types.Action): types.State => {
         }
 
         case actionTypes.GET_QUESTIONS: {
+            const questions: types.QuestionType[] = action.value.questions
+            const sortQuestions = state.sortQuestions
+
+            switch(sortQuestions) {
+                case 'latest':
+                    questions.sort((a, b) => a.id - b.id)
+                    break
+
+                case 'top':
+                    questions.sort((a, b) => a.votes - b.votes)
+                    break
+            }
+
             return {
                 ...state,
                 session: action.value.session,
-                questions: action.value.questions
+                questions
             }
         }
 
@@ -186,6 +201,26 @@ const reducer = (state: types.State, action: types.Action): types.State => {
             return {
                 ...state,
                 isAdmin: action.value
+            }
+        }
+
+        case actionTypes.SET_SORT_QUESTIONS: {
+            const questions = state.questions
+            
+            switch(action.value) {
+                case 'latest':
+                    questions.sort((a, b) => a.id - b.id)
+                    break
+
+                case 'top':
+                    questions.sort((a, b) => a.votes - b.votes)
+                    break
+            }
+
+            return {
+                ...state,
+                questions,
+                sortQuestions: action.value
             }
         }
         
