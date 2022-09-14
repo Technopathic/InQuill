@@ -209,11 +209,11 @@ const reducer = (state: types.State, action: types.Action): types.State => {
             
             switch(action.value) {
                 case 'latest':
-                    questions.sort((a, b) => a.id - b.id)
+                    questions.sort((a, b) => b.id - a.id)
                     break
 
                 case 'top':
-                    questions.sort((a, b) => a.votes - b.votes)
+                    questions.sort((a, b) => b.votes - a.votes)
                     break
             }
 
