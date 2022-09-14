@@ -206,7 +206,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       </header>
       <div className="h-px w-full bg-slate-500 max-w-screen-md m-auto" />
       <main className="flex flex-col flex-grow items-center pb-8">
-        <div className="w-full max-w-screen-sm">
+        <div className="w-full max-w-screen-sm mt-2 flex justify-end">
           <select value={sortQuestions} onChange={(e) => dispatch({ type: 'SET_SORT_QUESTIONS', value: e.target.value })}>
             <option value="latest">Latest</option>
             <option value="top">Most Votes</option>
