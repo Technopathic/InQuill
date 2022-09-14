@@ -8,7 +8,7 @@ import timezone from 'dayjs/plugin/timezone'
 import { RealtimeClient } from '@supabase/realtime-js'
 
 import * as types from '../../../types'
-import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion, SUPABASE_PUBLIC_KEY, supabase } from '../../../actions'
+import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion, supabase } from '../../../actions'
 
 import { FiChevronUp, FiTrash, FiCheck } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
@@ -19,7 +19,7 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault('Europe/Helsinki');
 
 const REALTIME_URL = 'wss://qepbbrribkrkypytwssf.supabase.co/realtime/v1'
-const socket = new RealtimeClient(REALTIME_URL,  { params: { apikey: SUPABASE_PUBLIC_KEY }})
+const socket = new RealtimeClient(REALTIME_URL,  { params: { apikey: process.env.SUPABASE_PUBLIC_KEY || '' }})
 
 let channel = null
 
@@ -78,7 +78,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }
 
   const createSubscription = () => {
-    channel = socket.channel('realtime:public:questions', { user_token: SUPABASE_PUBLIC_KEY })
+    channel = socket.channel('realtime:public:questions', { user_token: process.env.SUPABASE_PUBLIC_KEY })
     channel.on('INSERT', (e: any) => dispatch({ type: 'STORE_QUESTION', value: {
       id: e.record.id,
       sessionSlug: e.record.sessionSlug,
