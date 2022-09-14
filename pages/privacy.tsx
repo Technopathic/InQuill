@@ -140,13 +140,6 @@ const Privacy = () => (
                     <td>User survey</td>
                     <td>Cat. 2 - operations</td>
                 </tr>
-                <tr>
-                    <td>NewsletterCTA</td>
-                    <td>Persistent</td>
-                    <td>Global</td>
-                    <td>To check if the newsletter CTA has been shown</td>
-                    <td>Cat. 2 - operations</td>
-                </tr>
             </tbody>
         </table>
 
