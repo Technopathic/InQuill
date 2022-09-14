@@ -1,4 +1,4 @@
-![InQuill Logo](https://inquill.live/inquill-full-white.png)
+![InQuill Logo](https://inquill.live/inquill-full-gradient.png)
 
 ## What is InQuill?
 
