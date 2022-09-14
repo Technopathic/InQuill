@@ -1,4 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useEffect } from 'react'
@@ -23,8 +25,8 @@ const Home: NextPage<types.EventsPage> = (props) => {
   return (
     <>
       <header className="w-full h-40 flex flex-col justify-center items-center">
-          <div className="w-full h-24">
-              <h1 className="text-slate-700 text-8xl text-center">InQuill</h1>
+          <div className="flex justify-center px-4">
+            <img src="/inquill-full-white.png" alt="InQuill"/>
           </div>
       </header>
       <main className="flex flex-col flex-grow items-center mx-4">

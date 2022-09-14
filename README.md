@@ -1,3 +1,5 @@
+![InQuill Logo](https://inquill.live/inquill-full-white.png)
+
 ## What is InQuill?
 
 InQuill is an open-source solution to Live Q&A events and audience engagement. It allows for your audience to ask questions anonymously and non-anonmyously and for these questions to be answered by the speaker or production team. InQuill allows for real-time communication between the audience and the speaker through questions. Moreover, for reach event, you can create multiple Q&A rooms for different speakers concurrently or at different times.
