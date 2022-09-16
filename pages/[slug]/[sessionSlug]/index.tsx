@@ -170,7 +170,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
     } else {
       if(user) {
         return (
-          <div className="w-full mt-4">
+          <div className="w-full mt-4 px-2">
             <textarea className="w-full h-32 p-2 resize-none rounded-xl" ref={questionRef} placeholder="Ask your question here"></textarea>
             <div className="flex justify-between mt-1">
               <input className="flex rounded-xl w-1/2 px-3" placeholder="Your name (optional)" ref={authorRef} />
@@ -214,7 +214,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
         </div>
         <section className="w-full max-w-screen-sm">
           {questions.map((question, i) => (
-            <article key={i} className="flex bg-white rounded-xl mt-8 p-4 text-slate-700">
+            <article key={i} className="flex bg-white rounded-xl mt-8 p-4 text-slate-700 mx-2">
                 <div className="flex flex-col items-center pr-6">
                     {(user && votes) && 
                       <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-orange-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
