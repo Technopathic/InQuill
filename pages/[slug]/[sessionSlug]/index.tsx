@@ -197,7 +197,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       <header className="w-full flex flex-col justify-center items-center">
           <div className="flex flex-col justify-center max-w-screen-sm items-center w-full pt-8 pb-6">
               <h1 className="text-slate-700 text-2xl text-center">{session.title}</h1>
-              <div className="flex justify-between w-full px-2">
+              <div className="flex justify-between w-full px-2 text-slate-700">
                 <span>{session.speaker}</span>
                 <span>Ends: {dayjs(session.end_at).format('HH:mm')}</span>
               </div>
@@ -206,7 +206,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       </header>
       <div className="h-px w-full bg-slate-500 max-w-screen-md m-auto" />
       <main className="flex flex-col flex-grow items-center pb-8">
-        <div className="w-full max-w-screen-sm mt-2 px-2 flex justify-end">
+        <div className="w-full max-w-screen-sm mt-2 px-2 flex justify-end text-slate-700">
           <select value={sortQuestions} onChange={(e) => dispatch({ type: 'SET_SORT_QUESTIONS', value: e.target.value })}>
             <option value="latest">Latest</option>
             <option value="top">Most Votes</option>
@@ -214,7 +214,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
         </div>
         <section className="w-full max-w-screen-sm">
           {questions.map((question, i) => (
-            <article key={i} className="flex bg-white rounded-xl mt-8 p-4">
+            <article key={i} className="flex bg-white rounded-xl mt-8 p-4 text-slate-700">
                 <div className="flex flex-col items-center pr-6">
                     {(user && votes) && 
                       <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-orange-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>

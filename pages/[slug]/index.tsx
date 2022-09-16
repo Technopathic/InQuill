@@ -40,7 +40,7 @@ const Sessions: NextPage<types.SessionsPage> = (props) => {
       <main className="flex flex-col flex-grow items-center pb-8 mx-4">
         <section className="w-full max-w-screen-sm">
           {sessions.map((session, i) => (
-            <article key={i} className="flex flex-col bg-white rounded-xl mt-8">
+            <article key={i} className="flex flex-col bg-white rounded-xl mt-8 text-slate-700">
               <div className="p-6">
                 <span className="text-sm">Q&A - {dayjs(session.start_at).format('DD/MM/YYYY HH:mm')}</span>
                 <p className="text-xl font-bold my-1">{session.title}</p>
