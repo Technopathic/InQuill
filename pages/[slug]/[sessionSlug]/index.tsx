@@ -197,7 +197,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       <header className="w-full flex flex-col justify-center items-center">
           <div className="flex flex-col justify-center max-w-screen-sm items-center w-full pt-8 pb-6">
               <h1 className="text-slate-700 text-2xl text-center">{session.title}</h1>
-              <div className="flex justify-between w-full">
+              <div className="flex justify-between w-full mx-3">
                 <span>{session.speaker}</span>
                 <span>Ends: {dayjs(session.end_at).format('HH:mm')}</span>
               </div>
