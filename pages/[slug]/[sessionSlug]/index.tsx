@@ -197,7 +197,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       <header className="w-full flex flex-col justify-center items-center">
           <div className="flex flex-col justify-center max-w-screen-sm items-center w-full pt-8 pb-6">
               <h1 className="text-slate-700 text-2xl text-center">{session.title}</h1>
-              <div className="flex justify-between w-full mx-3">
+              <div className="flex justify-between w-full px-2">
                 <span>{session.speaker}</span>
                 <span>Ends: {dayjs(session.end_at).format('HH:mm')}</span>
               </div>
@@ -206,7 +206,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       </header>
       <div className="h-px w-full bg-slate-500 max-w-screen-md m-auto" />
       <main className="flex flex-col flex-grow items-center pb-8">
-        <div className="w-full max-w-screen-sm mt-2 flex justify-end">
+        <div className="w-full max-w-screen-sm mt-2 px-2 flex justify-end">
           <select value={sortQuestions} onChange={(e) => dispatch({ type: 'SET_SORT_QUESTIONS', value: e.target.value })}>
             <option value="latest">Latest</option>
             <option value="top">Most Votes</option>
