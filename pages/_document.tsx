@@ -1,16 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from "next/document"
 
-type PreloadLink = {
-    href: string;
-    as: 'font';
-    type: 'font/ttf';
-  }
-  
-  const PRELOAD_LINKS: PreloadLink[] = [
-    {href: '/fonts/Inter-Regular.ttf', as: 'font', type: 'font/ttf'},
-    {href: '/fonts/Inter-Bold.ttf', as: 'font', type: 'font/ttf'}
-  ]
-
 class MyDocument extends Document {
     render() {
         return (
@@ -33,9 +22,10 @@ class MyDocument extends Document {
                     <meta name="og:image:width" property="og:image:width" content={process.env.APP_IMAGE_WIDTH} />
                     <meta name="og:image:height" property="og:image:height" content={process.env.APP_IMAGE_HEIGHT} />
 
-                    {PRELOAD_LINKS.map((link: PreloadLink, i: number) => (
-                        <link rel="preload" href={link.href} as={link.as} type={link.type} crossOrigin="anonymous" key={i} />
-                    ))}
+                    <link rel="preconnect" href="https://fonts.googleapis.com" />
+                    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+                    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=League+Gothic&display=swap" as="style" crossOrigin="anonymous" />
+                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=League+Gothic&display=swap" rel="stylesheet" />
                 </Head>
                 <body>
                     <Main />
