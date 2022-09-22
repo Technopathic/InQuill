@@ -1,11 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession, getQuestions } from './db'
+import { getSession, getQuestions, getEvent } from './db'
 import { SessionType, QuestionType } from '../../types'
 
 type ResponseData = {
     session: SessionType | null;
     questions: QuestionType[];
     error: any;
+    requireAuth: boolean;
 }
 
 export default async function handler(
@@ -16,7 +17,8 @@ export default async function handler(
         return res.status(401).json({ 
             session: null, 
             questions: [], 
-            error: 'Not Allowed'
+            error: 'Not Allowed',
+            requireAuth: false
         })
     }
 
@@ -26,7 +28,8 @@ export default async function handler(
         return res.status(401).json({
             session: null,
             questions: [],
-            error: 'Incorrect session parameter.'
+            error: 'Incorrect session parameter.',
+            requireAuth: false
         })
     }
 
@@ -35,7 +38,18 @@ export default async function handler(
         return res.status(500).json({
             session: null,
             questions: [],
-            error: session.error
+            error: session.error,
+            requireAuth: false
+        })
+    }
+
+    const event = await getEvent(session.eventId);
+    if(event.error) {
+        return res.status(500).json({
+            session: null,
+            questions: [],
+            error: event.error,
+            requireAuth: false
         })
     }
 
@@ -44,6 +58,7 @@ export default async function handler(
     return res.status(200).json({
         session,
         questions: data || [],
-        error
+        error,
+        requireAuth: event.requireAuth
     })
 }

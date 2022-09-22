@@ -29,6 +29,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   const questionRef = useRef<HTMLTextAreaElement>(null)
   const authorRef = useRef<HTMLInputElement>(null)
   const [user, setUser] = useState<any>(null)
+  const [requireAuth, setRequireAuth] = useState<boolean>(false)
 
   useEffect(() => {
     async function getVotes() {
@@ -66,12 +67,12 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }, [])
 
   const handleGetQuestions = async() => {
-    console.log('TEST')
     if(session) {
       const data = await getQuestions(session.slug)
       if(data.error) {
         console.log(data.error)
       } else {
+        setRequireAuth(data.requireAuth)
         dispatch({ type: 'GET_QUESTIONS', value: {  session: data.session, questions: data.questions } })
       }
     }
@@ -168,7 +169,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
         </div>
       )
     } else {
-      if(user) {
+      if(user || !requireAuth) {
         return (
           <div className="w-full mt-4 px-2">
             <textarea className="w-full h-32 p-2 resize-none rounded-xl" ref={questionRef} placeholder="Ask your question here"></textarea>
