@@ -26,7 +26,7 @@ const Home: NextPage<types.EventsPage> = (props) => {
     <>
       <header className="w-full h-40 flex flex-col justify-center items-center">
           <div className="flex justify-center px-4">
-            <h1 className="siteTitle">IGDA Q&A</h1>
+            <h1 className="siteTitle">{process.env.APP_SITE_NAME}</h1>
           </div>
       </header>
       <main className="flex flex-col flex-grow items-center mx-4">
