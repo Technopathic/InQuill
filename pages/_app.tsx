@@ -26,7 +26,7 @@ const App = ({ Component, pageProps } : AppProps) => {
     
     const token = router.asPath.includes('#')
     if(token) {
-      window.history.go(-2)
+      router.push('/')
     }
 
     return () => {
