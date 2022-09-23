@@ -187,6 +187,8 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }
 
   const renderVoteButton = (question: types.QuestionType) => {
+    console.log(user)
+    console.log(votes)
     if(user && votes) {
       return (
         <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-orange-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
