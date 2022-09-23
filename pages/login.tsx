@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { signIn, getUser } from '../../actions'
+import { signIn, getUser } from '../actions'
 import { FcGoogle } from "react-icons/fc";
 import { SiTwitter } from "react-icons/si"
 import { useEffect } from 'react';
