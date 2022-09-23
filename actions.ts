@@ -46,7 +46,6 @@ export const getQuestions = async(slug: string) => {
 
 export const getQuestionVotes = async() => {
     const auth = localStorage.getItem('supabase.auth.token')
-    console.log(auth)
     if(auth) {
         const { currentSession }= JSON.parse(auth)
         const data = await axios({
