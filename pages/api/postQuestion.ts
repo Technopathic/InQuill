@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession, storeQuestion, getUser, isBanned } from './db'
+import { getSession, storeQuestion, getUser, isBanned, getEvent } from './db'
 import { QuestionType } from '../../types'
 
 type ResponseOptions = {
@@ -36,32 +36,6 @@ export default async function handler(
     }
 
     const { sessionSlug, content, author } = req.body
-
-    if(!req.headers.authorization) {
-        return res.status(403).json({
-            error: 'Missing authorization token'
-        })
-    }
-
-    const user = await getUser(req.headers.authorization)
-    if(user.error) {
-        return res.status(403).json({
-            error: user.error
-        })
-    }
-
-    if(!user.user) {
-        return res.status(404).json({
-            error: 'User not found.'
-        })
-    }
-
-    const checkBan = await isBanned(user.user.id)
-    if(checkBan) {
-        return res.status(403).json({
-            error: 'You cannot post a question.'
-        })
-    }
 
     if(!sessionSlug || typeof sessionSlug !== 'string') {
         return res.status(401).json({
@@ -105,6 +79,45 @@ export default async function handler(
         })
     }
 
+    const event = await getEvent(session.eventSlug)
+    if(event.error) {
+        return res.status(500).json({
+            error: event.error
+        })
+    }
+
+    let userId = null
+    if(event.requireAuth) {
+        if(!req.headers.authorization) {
+            return res.status(403).json({
+                error: 'Missing authorization token'
+            })
+        }
+
+        const user = await getUser(req.headers.authorization)
+        if(user.error) {
+            return res.status(403).json({
+                error: user.error
+            })
+        }
+
+        if(!user.user) {
+            return res.status(404).json({
+                error: 'User not found.'
+            })
+        }
+
+        const checkBan = await isBanned(user.user.id)
+        if(checkBan) {
+            return res.status(403).json({
+                error: 'You cannot post a question.'
+            })
+        }
+
+        userId = user.user.id
+    }
+
+
     const currentTime = new Date().getTime()
     const startTime = new Date(session.start_at).getTime()
     const endTime = new Date(session.end_at).getTime()
@@ -126,7 +139,7 @@ export default async function handler(
         author: questionAuthor || 'Anonymous',
         votes: 0,
         content: questionContent,
-        userId: user.user.id,
+        userId,
         answered: false
     }
 
@@ -141,7 +154,7 @@ export default async function handler(
         ...questionData,
         id: question.id,
         created_at: question.created_at,
-        userId: user.user.id
+        userId
     }
 
     return res.status(200).json({

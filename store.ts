@@ -132,6 +132,8 @@ const reducer = (state: types.State, action: types.Action): types.State => {
                 votes.push(voteQuestion.id)
             }
 
+            localStorage.setItem('questionVotes', JSON.stringify(votes))
+            
             return {
                 ...state,
                 questions,

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession, getQuestion, storeQuestionVote, updateQuestionVote, getUser, getQuestionVote, isBanned } from './db'
+import { getSession, getQuestion, storeQuestionVote, updateQuestionVote, getUser, getQuestionVote, isBanned, getEvent } from './db'
 import { QuestionType } from '../../types'
 
 type ResponseOptions = {
@@ -35,32 +35,6 @@ export default async function handler(
 
     const { id } = req.body;
 
-    if(!req.headers.authorization) {
-        return res.status(403).json({
-            error: 'Missing authorization token'
-        })
-    }
-
-    const user = await getUser(req.headers.authorization)
-    if(user.error) {
-        return res.status(403).json({
-            error: user.error
-        })
-    }
-
-    if(!user.user) {
-        return res.status(404).json({
-            error: 'User not found.'
-        })
-    }
-
-    const checkBan = await isBanned(user.user.id)
-    if(checkBan) {
-        return res.status(403).json({
-            error: 'You cannot vote on this question.'
-        })
-    }
-
     if(!id || typeof id !== 'number') {
         return res.status(401).json({
             error: 'Missing question Id.'
@@ -74,18 +48,56 @@ export default async function handler(
         })
     }
 
-    const checkVote = await getQuestionVote(question.id, user.user.id);
-    if(checkVote && checkVote.length !== 0) {
-        return res.status(401).json({
-            error: 'You have already voted.'
-        })
-    }
-
     const session = await getSession(question.sessionSlug)
     if(session.error) {
         return res.status(500).json({
             error: session.error
         })
+    }
+
+    const event = await getEvent(session.eventSlug)
+    if(event.error) {
+        return res.status(500).json({
+            error: event.error
+        })
+    }
+
+    let userId = null
+    if(event.requireAuth) {
+        if(!req.headers.authorization) {
+            return res.status(403).json({
+                error: 'Missing authorization token'
+            })
+        }
+
+        const user = await getUser(req.headers.authorization)
+        if(user.error) {
+            return res.status(403).json({
+                error: user.error
+            })
+        }
+
+        if(!user.user) {
+            return res.status(404).json({
+                error: 'User not found.'
+            })
+        }
+
+        const checkBan = await isBanned(user.user.id)
+        if(checkBan) {
+            return res.status(403).json({
+                error: 'You cannot vote on this question.'
+            })
+        }
+
+        userId = user.user.id
+
+        const checkVote = await getQuestionVote(question.id, userId);
+        if(checkVote && checkVote.length !== 0) {
+            return res.status(401).json({
+                error: 'You have already voted.'
+            })
+        }
     }
 
     if(question.votes >= 100) {
@@ -94,7 +106,7 @@ export default async function handler(
         })
     }
 
-    const questionData = await storeQuestionVote(id, user.user.id)
+    const questionData = await storeQuestionVote(id, userId)
     if(questionData.error) {
         return res.status(403).json({
             error: questionData.error

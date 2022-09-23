@@ -60,51 +60,65 @@ export const getQuestionVotes = async() => {
         .catch(error => error.response.data)
     
         return data
+    } else {
+        const questionVotes = localStorage.getItem('questionVotes')
+        if(questionVotes) {
+            return JSON.parse(questionVotes)
+        } else {
+            return []
+        }
     }
 }
 
 export const storeQuestion = async(sessionSlug: string, content: string, author: string) => {
     const auth = localStorage.getItem('supabase.auth.token')
+    
+    const headers: any = {
+        'Content-Type': 'application/json'
+    }
+
     if(auth) {
         const { currentSession }= JSON.parse(auth)
-        const data = await axios({
-            method: 'POST',
-            url: `${process.env.API_URL}/postQuestion` || '',
-            data: JSON.stringify({
-                sessionSlug,
-                content,
-                author
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': currentSession.access_token
-            }
-        })
-        .then(res => res.data)
-        .catch(error => error.response.data)
-    
-        return data
+        headers.Authorization = currentSession.access_token
     }
-    
+
+    const data = await axios({
+        method: 'POST',
+        url: `${process.env.API_URL}/postQuestion` || '',
+        data: JSON.stringify({
+            sessionSlug,
+            content,
+            author
+        }),
+        headers
+    })
+    .then(res => res.data)
+    .catch(error => error.response.data)
+
+    return data
 }
 
 export const storeQuestionVote = async(id: number) => {
     const auth = localStorage.getItem('supabase.auth.token')
+
+    const headers: any = {
+        'Content-Type': 'application/json'
+    }
+
     if(auth) {
         const { currentSession }= JSON.parse(auth)
-        const data = await axios.post(`${process.env.API_URL}/postQuestionVote` || '', {
-            id
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': currentSession.access_token
-            }
-        })
-        .then(res => res.data)
-        .catch(error => error.response.data)
-    
-        return data
+        headers.Authorization = currentSession.access_token
     }
+
+    const data = await axios.post(`${process.env.API_URL}/postQuestionVote` || '', {
+        id
+    }, {
+        headers
+    })
+    .then(res => res.data)
+    .catch(error => error.response.data)
+
+    return data
 }
 
 export const deleteQuestion = async(id: number) => {

@@ -43,7 +43,7 @@ export default async function handler(
         })
     }
 
-    const event = await getEvent(session.eventId);
+    const event = await getEvent(session.eventSlug);
     if(event.error) {
         return res.status(500).json({
             session: null,
