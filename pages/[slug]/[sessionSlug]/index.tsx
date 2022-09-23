@@ -194,14 +194,14 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
         </div>
       )
     }
-    
+    /*
     if(!requireAuth && votes) {
       return (
         <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-orange-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
           <FiChevronUp size={32} />
         </div>
       )
-    }
+    }*/
   }
   
   return (
