@@ -28,16 +28,13 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   const { dispatch }: types.Dispatch = useStore()
   const questionRef = useRef<HTMLTextAreaElement>(null)
   const authorRef = useRef<HTMLInputElement>(null)
-  const [user, setUser] = useState<any>(null)
+  const user = getUser()
   const [requireAuth, setRequireAuth] = useState<boolean>(false)
-  const [voteLoading, setVoteLoading] = useState<boolean>(true)
 
   useEffect(() => {
     async function getVotes() {
       const questionVotes = await getQuestionVotes()
-      console.log(questionVotes)
       dispatch({ type: 'GET_QUESTION_VOTES', value: questionVotes.votes })
-      setVoteLoading(false)
     }
 
     async function getAdmin() {
@@ -45,13 +42,10 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       dispatch({ type: 'SET_ADMIN', value: admin.success })
     }
 
-    const auth = getUser()
-    if(auth) {
-      setUser(auth)
+    if(user) {
       getAdmin()
     }
     getVotes()
-    console.log(votes)
 
     if(props.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
@@ -190,6 +184,24 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       }
     }
   }
+
+  const renderVoteButton = (question: types.QuestionType) => {
+    if(user && votes) {
+      return (
+        <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-orange-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
+          <FiChevronUp size={32} />
+        </div>
+      )
+    }
+    
+    if(!requireAuth && votes) {
+      return (
+        <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-orange-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
+          <FiChevronUp size={32} />
+        </div>
+      )
+    }
+  }
   
   return (
     <>
@@ -215,11 +227,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
           {questions.map((question, i) => (
             <article key={i} className="flex bg-white rounded-xl mt-8 p-4 text-slate-700 mx-2">
                 <div className="flex flex-col items-center pr-6">
-                    {((!voteLoading && user && votes) || !voteLoading && !requireAuth && votes) && 
-                      <div className={`cursor-pointer ${votes.includes(question.id) ? 'text-orange-400' : 'text-slate-800'}`} onClick={() => handleStoreQuestionVote(question.id)}>
-                        <FiChevronUp size={32} />
-                      </div>
-                    }
+                    {renderVoteButton(question)}
                     <p className="text-2xl mb-2">{question.votes}</p>
                     <span className="text-sm">Votes</span>
                 </div>
