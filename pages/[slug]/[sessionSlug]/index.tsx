@@ -51,6 +51,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       getAdmin()
     }
     getVotes()
+    console.log(votes)
 
     if(props.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
