@@ -45,9 +45,9 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
     const auth = getUser()
     if(auth) {
       setUser(auth)
-      getVotes()
       getAdmin()
     }
+    getVotes()
 
     if(props.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
@@ -65,18 +65,6 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       }
     })
   }, [])
-
-  const handleGetQuestions = async() => {
-    if(session) {
-      const data = await getQuestions(session.slug)
-      if(data.error) {
-        console.log(data.error)
-      } else {
-        setRequireAuth(data.requireAuth)
-        dispatch({ type: 'GET_QUESTIONS', value: {  session: data.session, questions: data.questions } })
-      }
-    }
-  }
 
   const createSubscription = () => {
     channel = socket.channel('realtime:public:questions', { user_token: process.env.SUPABASE_PUBLIC_KEY })
@@ -116,6 +104,11 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }
 
   const handleStoreQuestionVote = async(id: number) => {
+    if(votes.includes(id)) {
+      dispatch({ type: 'SET_SNACK', value: { show: true, message: 'You have already voted.' }})
+      return
+    }
+
     const response = await storeQuestionVote(id)
     if(response.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})

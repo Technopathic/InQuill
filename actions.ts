@@ -63,9 +63,9 @@ export const getQuestionVotes = async() => {
     } else {
         const questionVotes = localStorage.getItem('questionVotes')
         if(questionVotes) {
-            return JSON.parse(questionVotes)
+            return { votes: JSON.parse(questionVotes) }
         } else {
-            return []
+            return { votes: [] }
         }
     }
 }
