@@ -31,7 +31,7 @@ const initialState: types.State  = {
         show: false,
         message: null
     },
-    votes: [],
+    votes: null,
     isAdmin: false,
     sortQuestions: 'latest'
 }
@@ -125,7 +125,7 @@ const reducer = (state: types.State, action: types.Action): types.State => {
 
         case actionTypes.STORE_QUESTION_VOTE: {
             const questions = state.questions
-            const votes = state.votes
+            const votes = state.votes || []
             const voteQuestion = questions.find(question => question.id === action.value.id)
             if(voteQuestion) {
                 voteQuestion.votes = action.value.votes

@@ -46,7 +46,7 @@ export type State = {
     session: SessionType | null;
     questions: QuestionType[];
     snack: Snack;
-    votes: number[];
+    votes: number[] | null;
     isAdmin: boolean;
     sortQuestions: 'latest' | 'top';
 }

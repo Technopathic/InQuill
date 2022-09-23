@@ -103,7 +103,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }
 
   const handleStoreQuestionVote = async(id: number) => {
-    if(votes.includes(id)) {
+    if(votes && votes.includes(id)) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: 'You have already voted.' }})
       return
     }
