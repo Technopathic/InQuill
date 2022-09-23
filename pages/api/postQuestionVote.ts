@@ -63,7 +63,7 @@ export default async function handler(
     }
 
     let userId = null
-    if(event.requireAuth) {
+    if(event.requireAuth || req.headers.authorization) {
         if(!req.headers.authorization) {
             return res.status(403).json({
                 error: 'Missing authorization token'
