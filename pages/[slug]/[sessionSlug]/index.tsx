@@ -53,6 +53,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: props.error }})
     } else {
       dispatch({ type: 'GET_QUESTIONS', value: {  session: props.session, questions: props.questions } })
+      setRequireAuth(props.requireAuth)
     }
 
     createSubscription()

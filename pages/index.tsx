@@ -1,16 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { useStore } from '../store'
 
 import * as types from '../types'
-import { getEvents, getUser } from '../actions'
+import { getEvents } from '../actions'
 
 const Home: NextPage<types.EventsPage> = (props) => {
-  const router = useRouter()
   const { events }: types.State = useStore()
   const { dispatch }: types.Dispatch = useStore()
 

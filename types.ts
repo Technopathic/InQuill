@@ -89,4 +89,5 @@ export type QuestionsPage = {
     session: SessionType;
     questions: QuestionType[];
     error: string;
+    requireAuth: boolean;
 }
