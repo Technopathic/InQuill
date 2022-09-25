@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@panelbear/panelbear-nextjs": "^1.0.4",
-    "@supabase/auth-helpers-nextjs": "^0.2.7",
     "@supabase/realtime-js": "^1.7.4",
     "@supabase/supabase-js": "^1.35.6",
     "axios": "^0.27.2",

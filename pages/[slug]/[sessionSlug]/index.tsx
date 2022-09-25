@@ -164,9 +164,9 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       if(user || !requireAuth) {
         return (
           <div className="w-full mt-4 px-2">
-            <textarea className="w-full h-32 p-2 resize-none rounded-xl" ref={questionRef} placeholder="Ask your question here"></textarea>
+            <textarea className="w-full h-32 p-2 resize-none rounded-xl text-slate-800" ref={questionRef} placeholder="Ask your question here"></textarea>
             <div className="flex justify-between mt-1">
-              <input className="flex rounded-xl w-1/2 px-3" placeholder="Your name (optional)" ref={authorRef} />
+              <input className="flex rounded-xl w-1/2 px-3 text-slate-800" placeholder="Your name (optional)" ref={authorRef} />
               <div className="cursor-pointer bg-slate-800 py-2 px-10 rounded-xl text-white text-xl select-none" onClick={handleStoreQuestion}>Ask</div>
             </div>
           </div>
