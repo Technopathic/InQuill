@@ -22,7 +22,11 @@ const actionTypes: Record<string, types.ActionType> = {
 let store: any
 
 const initialState: types.State  = {
-    events: [],
+    events: {
+        currentEvents: [],
+        upcomingEvents: [],
+        pastEvents: []
+    },
     event: null,
     sessions: [],
     session: null,

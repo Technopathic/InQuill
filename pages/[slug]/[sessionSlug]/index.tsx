@@ -8,7 +8,7 @@ import timezone from 'dayjs/plugin/timezone'
 import { RealtimeClient } from '@supabase/realtime-js'
 
 import * as types from '../../../types'
-import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion, supabase } from '../../../actions'
+import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion, supabase, getSession } from '../../../actions'
 
 import { FiChevronUp, FiTrash, FiCheck } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
@@ -253,8 +253,9 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 }
 
 export async function getServerSideProps(context: any) {
-  const data = await getQuestions(context.query.sessionSlug)
-  return { props: { session: data.session, questions: data.questions, error: data.error} }
+  const { data, error } = await getQuestions(context.query.sessionSlug)
+  const { data: sessionData, error: sessionError } = await getSession(context.query.sessionSlug)
+  return { props: { session: sessionData, questions: data || [], error: error || sessionError } }
 }
 
 export default Questions

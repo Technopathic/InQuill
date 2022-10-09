@@ -2,6 +2,14 @@ export type EventType = {
     id: number;
     title: string;
     slug: string;
+    start_at: string;
+    end_at: string;
+}
+
+export type EventsCollection = {
+    currentEvents: EventType[];
+    upcomingEvents: EventType[];
+    pastEvents: EventType[];
 }
 
 export type SessionType = {
@@ -40,7 +48,7 @@ export type Snack = {
 }
 
 export type State = {
-    events: EventType[];
+    events: EventsCollection;
     event: EventType | null;
     sessions: SessionType[];
     session: SessionType | null;
@@ -75,7 +83,7 @@ export type Dispatch = {
 }
 
 export type EventsPage = {
-    events: EventType[];
+    events: EventsCollection;
     error: string;
 }
 

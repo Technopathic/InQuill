@@ -2,6 +2,7 @@ import axios from 'axios'
 import { createClient } from '@supabase/supabase-js'
 import { NextApiRequest } from 'next'
 import { AuthChangeEvent, Session } from '@supabase/supabase-js'
+import * as types from './types'
 
 export const supabase = createClient(process.env.SUPABASE_URL || '', process.env.SUPABASE_PUBLIC_KEY || '')
 
@@ -14,34 +15,44 @@ export const setAuthCookie = async(event: AuthChangeEvent, session: Session | nu
     })
 }
 
-export const getEvents = async() => {
-    const data = await axios.get(`${process.env.API_URL}/getEvents`)
-    .then(res => res.data)
-    .catch(error => error.response.data)
-
-    return data
+export const getEvents = async(): Promise<({ data: types.EventType[], error: string | null })>  => {
+    const { data, error } = await supabase.from('events').select('id, title, slug, start_at, end_at').eq('archived', false)
+    return {
+        data: data || [],
+        error: error ? error.message : null
+    }
 }
 
-export const getSessions = async(slug: string) => {
-    const data = await axios.get(`${process.env.API_URL}/getSessions?eventSlug=${slug}`)
-    .then(res => res.data)
-    .catch(error => error.response.data)
-
-    return data
+export const getEvent = async(slug: string): Promise<({ data: types.EventType | null, error: string | null })> => {
+    const { data, error } = await supabase.from('events').select('id, title, slug').eq('slug', slug).eq('archived', false)
+    return {
+        data: data ? data[0] : null,
+        error: error ? error.message : null
+    }
 }
 
-export const getQuestions = async(slug: string) => {
-    const data = await axios({
-        method: 'GET',
-        url: `${process.env.API_URL}/getQuestions?sessionSlug=${slug}`,
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(res => res.data)
-    .catch(error => error.response.data)
+export const getSessions = async(slug: string): Promise<({ data: types.SessionType[], error: string | null })> => {
+    const { data, error } = await supabase.from('sessions').select('id, eventSlug, title, slug, description, speaker, start_at').eq('eventSlug', slug).eq('archived', false).order('start_at', { ascending: true })
+    return {
+        data: data || [],
+        error: error ? error.message : null
+    }
+}
 
-    return data
+export const getSession = async(slug: string): Promise<({ data: types.SessionType, error: string | null })> => {
+    const { data, error } = await supabase.from('sessions').select('id, eventSlug, title, slug, description, speaker, start_at, end_at').eq('slug', slug).eq('archived', false)
+    return {
+        data: data ? data[0] : null,
+        error: error ? error.message : null
+    }
+}
+
+export const getQuestions = async(slug: string): Promise<({ data: types.QuestionType[], error: string | null })> => {
+    const { data, error } = await supabase.from('questions').select('id, sessionSlug, author, userId, votes, content, answered, created_at').eq('sessionSlug', slug).eq('archived', false).order('id', { ascending: false })
+    return {
+        data: data || [],
+        error: error ? error.message : null
+    }
 }
 
 export const getQuestionVotes = async() => {
