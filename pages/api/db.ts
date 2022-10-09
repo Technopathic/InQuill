@@ -2,7 +2,31 @@ import { createClient } from '@supabase/supabase-js'
 import type { NextApiRequest, NextApiResponse } from 'next'
 const supabase = createClient(process.env.SUPABASE_URL || '', process.env.SUPABASE_PUBLIC_KEY || '')
 import * as types from '../../types'
-   
+
+export const getEvents = async () => await supabase.from('events').select('id, title, slug').eq('archived', false)
+
+export const getEvent = async(slug: string) => {
+    const { data, error } = await supabase.from('events').select('id, title, slug').eq('slug', slug).eq('archived', false)
+    if (error) { 
+        return { error: `Unable to fetch event: ${error}` }
+    }
+
+    return data[0]
+}
+
+export const getSessions = async(slug: string) => await supabase.from('sessions').select('id, eventSlug, title, slug, description, speaker, start_at').eq('eventSlug', slug).eq('archived', false).order('start_at', { ascending: true })
+
+export const getSession = async(slug: string) => {
+    const { data, error } = await supabase.from('sessions').select('id, eventSlug, title, slug, description, speaker, start_at, end_at').eq('slug', slug).eq('archived', false)
+    if (error) { 
+        return { error: `Unable to fetch session: ${error}` }
+    }
+
+    return data[0]
+}
+
+export const getQuestions = async(slug: string) => await supabase.from('questions').select('id, sessionSlug, author, userId, votes, content, answered, created_at').eq('sessionSlug', slug).eq('archived', false).order('id', { ascending: false })
+
 export const getQuestion = async(id: number) => {
     const { data, error } = await supabase.from('questions').select('id, sessionSlug, votes').eq('id', id).eq('archived', false)
     if (error) { 
