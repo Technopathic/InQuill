@@ -55,6 +55,14 @@ export const getQuestions = async(slug: string): Promise<({ data: types.Question
     }
 }
 
+export const getQuestion = async(id: number): Promise<({ data: types.QuestionType, error: string | null })> => {
+    const { data, error } = await supabase.from('questions').select('id, sessionSlug, author, userId, votes, content, answered, created_at').eq('id', id).eq('archived', false)
+    return {
+        data: data ? data[0] : null,
+        error: error ? error.message : null
+    }
+}
+
 export const getQuestionVotes = async() => {
     const auth = localStorage.getItem('supabase.auth.token')
     if(auth) {

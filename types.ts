@@ -99,3 +99,8 @@ export type QuestionsPage = {
     error: string;
     requireAuth: boolean;
 }
+
+export type FullPage = {
+    question: QuestionType;
+    error: string;
+}
