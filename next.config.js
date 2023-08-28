@@ -22,6 +22,11 @@ const nextConfig = {
   env,
   reactStrictMode: false,
   swcMinify: true,
+  client: {
+    auth: {
+        persistSession: false
+    }
+  }
 }
 
 module.exports = nextConfig

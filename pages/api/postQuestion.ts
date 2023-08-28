@@ -78,7 +78,6 @@ export default async function handler(
             error: `Unable to fetch session: ${session.error}` 
         })
     }
-
     const event = await getEvent(session.data[0].eventSlug)
     if(event.error || !event.data) {
         return res.status(500).json({
