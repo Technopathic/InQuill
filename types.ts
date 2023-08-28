@@ -42,6 +42,15 @@ export type QuestionData = {
     userId: string | null;
 }
 
+export type CheckInData = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    name: string;
+    eventId: number;
+    hasTicket: boolean;
+}
+
 export type Snack = {
     show: boolean;
     message: string | null;
@@ -87,9 +96,20 @@ export type EventsPage = {
     error: string;
 }
 
+export type EventPage = {
+    event: EventType;
+    error: string;
+}
+
 export type SessionsPage = {
     event: EventType;
     sessions: SessionType[];
+    error: string;
+}
+
+export type QRPage = {
+    event: EventType;
+    session: SessionType;
     error: string;
 }
 

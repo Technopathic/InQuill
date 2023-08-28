@@ -31,7 +31,7 @@ export default async function handler(
     }
 
     const event = await getEvent(eventSlug);
-    if (event.error) {
+    if (event.error || !event.data) {
         return res.status(500).json({
             event: null,
             sessions: [],
@@ -39,10 +39,10 @@ export default async function handler(
         })
     }
 
-    const { data, error } = await getSessions(event.slug);
+    const { data, error } = await getSessions(event.data.slug);
 
     return res.status(200).json({
-        event,
+        event: event.data,
         sessions: data || [],
         error
     })

@@ -24,7 +24,7 @@ export const getEvents = async(): Promise<({ data: types.EventType[], error: str
 }
 
 export const getEvent = async(slug: string): Promise<({ data: types.EventType | null, error: string | null })> => {
-    const { data, error } = await supabase.from('events').select('id, title, slug').eq('slug', slug).eq('archived', false)
+    const { data, error } = await supabase.from('events').select('id, title, slug, start_at, end_at').eq('slug', slug).eq('archived', false)
     return {
         data: data ? data[0] : null,
         error: error ? error.message : null
@@ -39,7 +39,7 @@ export const getSessions = async(slug: string): Promise<({ data: types.SessionTy
     }
 }
 
-export const getSession = async(slug: string): Promise<({ data: types.SessionType, error: string | null })> => {
+export const getSession = async(slug: string): Promise<({ data: types.SessionType | null, error: string | null })> => {
     const { data, error } = await supabase.from('sessions').select('id, eventSlug, title, slug, description, speaker, start_at, end_at').eq('slug', slug).eq('archived', false)
     return {
         data: data ? data[0] : null,
@@ -55,7 +55,7 @@ export const getQuestions = async(slug: string): Promise<({ data: types.Question
     }
 }
 
-export const getQuestion = async(id: number): Promise<({ data: types.QuestionType, error: string | null })> => {
+export const getQuestion = async(id: number): Promise<({ data: types.QuestionType | null, error: string | null })> => {
     const { data, error } = await supabase.from('questions').select('id, sessionSlug, author, userId, votes, content, answered, created_at').eq('id', id).eq('archived', false)
     return {
         data: data ? data[0] : null,
@@ -178,11 +178,18 @@ export const answerQuestion = async(id: number) => {
     }
 }
 
-export const signIn = async(provider: 'google' | 'twitter') => await supabase.auth.signIn({ provider })
+export const signIn = async(provider: 'google' | 'twitter') => {return}//await supabase.auth.signIn({ provider })
 
-export const getUser = () => supabase.auth.user()
+export const getUser = async() => {
+    const { data } = await supabase.auth.getSession()
+    if(data) {
+        return data.session?.user
+    }
 
-export const getUserByCookie = async (req: NextApiRequest) => await supabase.auth.api.getUserByCookie(req)
+    return null;
+}
+
+export const getUserByCookie = async (req: NextApiRequest) => {return} //await supabase.auth.api.getUserByCookie(req)
 
 export const getIsAdmin = async () => {
     const auth = localStorage.getItem('supabase.auth.token')
@@ -201,4 +208,70 @@ export const getIsAdmin = async () => {
     
         return data
     }
+}
+
+export const storeCheckin = async(eventSlug: string, qrCode: string) => {   
+    const headers: any = {
+        'Content-Type': 'application/json'
+    }
+
+    const data = await axios({
+        method: 'POST',
+        //url: `${process.env.API_URL}/postCheckIn` || '',
+        url: `${process.env.API_URL}/api/postCheckIn`,
+        data: JSON.stringify({
+            eventSlug,
+            qrCode
+        }),
+        headers
+    })
+    .then(res => res.data)
+    .catch(error => error.response.data)
+
+    return data
+}
+
+export const storeCheckinManual = async(eventSlug: string, firstName: string, lastName: string, email: string) => {   
+    const headers: any = {
+        'Content-Type': 'application/json'
+    }
+
+    const data = await axios({
+        method: 'POST',
+        //url: `${process.env.API_URL}/postCheckIn` || '',
+        url: `${process.env.API_URL}/api/postCheckinManual`,
+        data: JSON.stringify({
+            eventSlug,
+            firstName,
+            lastName,
+            email
+        }),
+        headers
+    })
+    .then(res => res.data)
+    .catch(error => error.response.data)
+
+    return data
+}
+
+export const updateSendInfo = async(eventSlug: string, email: string, sendInfo: boolean) => {   
+    const headers: any = {
+        'Content-Type': 'application/json'
+    }
+
+    const data = await axios({
+        method: 'POST',
+        //url: `${process.env.API_URL}/postCheckIn` || '',
+        url: `${process.env.API_URL}/api/postSendInfo`,
+        data: JSON.stringify({
+            eventSlug,
+            email,
+            sendInfo
+        }),
+        headers
+    })
+    .then(res => res.data)
+    .catch(error => error.response.data)
+
+    return data
 }

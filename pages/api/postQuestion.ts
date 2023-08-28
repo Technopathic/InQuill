@@ -73,21 +73,21 @@ export default async function handler(
     }
 
     const session = await getSession(sessionSlug)
-    if (session.error) {
+    if (session.error || !session.data) {
         return res.status(500).json({
-            error: session.error
+            error: `Unable to fetch session: ${session.error}` 
         })
     }
 
-    const event = await getEvent(session.eventSlug)
-    if(event.error) {
+    const event = await getEvent(session.data[0].eventSlug)
+    if(event.error || !event.data) {
         return res.status(500).json({
-            error: event.error
+            error: `Unable to fetch event: ${event.error}` 
         })
     }
 
     let userId = null
-    if(event.requireAuth || req.headers.authorization) {
+    if(event.data.requireAuth || req.headers.authorization) {
         if(!req.headers.authorization) {
             return res.status(403).json({
                 error: 'Missing authorization token'
@@ -119,8 +119,8 @@ export default async function handler(
 
 
     const currentTime = new Date().getTime()
-    const startTime = new Date(session.start_at).getTime()
-    const endTime = new Date(session.end_at).getTime()
+    const startTime = new Date(session.data[0].start_at).getTime()
+    const endTime = new Date(session.data[0].end_at).getTime()
 
     if(startTime > currentTime) {
         return res.status(403).json({
@@ -135,7 +135,7 @@ export default async function handler(
     }
 
     const questionData = {
-        sessionSlug: session.slug,
+        sessionSlug: session.data[0].slug,
         author: questionAuthor || 'Anonymous',
         votes: 0,
         content: questionContent,
@@ -144,16 +144,16 @@ export default async function handler(
     }
 
     const question = await storeQuestion(questionData);
-    if(question.error) {
+    if(question.error || !question.data) {
         return res.status(500).json({
-            error: question.error
+            error: `Unable to fetch event: ${event.error}` 
         })
     }
 
     const questionResponse = {
         ...questionData,
-        id: question.id,
-        created_at: question.created_at,
+        id: question.data[0].id,
+        created_at: question.data[0].created_at,
         userId
     }
 

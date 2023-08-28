@@ -2,7 +2,6 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { usePanelbear } from '@panelbear/panelbear-nextjs';
 import { useCreateStore, Provider } from '../store'
 import { supabase, setAuthCookie } from '../actions'
 
@@ -15,9 +14,8 @@ const App = ({ Component, pageProps } : AppProps) => {
   const store = useCreateStore(pageProps.state);
 
   const router = useRouter()
-  const excludeFooter: string[] = []
+  const excludeFooter: string[] = ['/qrcode']
 
-  usePanelbear(process.env.PANEL_BEAR_ID || '');
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
@@ -30,7 +28,7 @@ const App = ({ Component, pageProps } : AppProps) => {
     }
 
     return () => {
-        authListener?.unsubscribe();
+        //authListener?.unsubscribe();
     };
   }, [router]);
 
@@ -49,7 +47,6 @@ const App = ({ Component, pageProps } : AppProps) => {
       <Provider createStore={store}>
         <div className="flex flex-col justify-between min-h-screen text-gray-700 dark:text-gray-50">
           <Component {...pageProps} />
-          <Footer />
           <Snack />
         </div>
       </Provider>

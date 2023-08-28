@@ -24,8 +24,8 @@ class MyDocument extends Document {
 
                     <link rel="preconnect" href="https://fonts.googleapis.com" />
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-                    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=League+Gothic&display=swap" as="style" crossOrigin="anonymous" />
-                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=League+Gothic&display=swap" rel="stylesheet" />
+                    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bebas+Neue&display=swap" as="style" crossOrigin="anonymous" />
+                    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet" />
                 </Head>
                 <body>
                     <Main />

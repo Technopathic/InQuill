@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
-import { getQuestion } from '../../../../actions'
+import { getQuestion } from '../../../../../actions'
 
-import * as types from '../../../../types'
+import * as types from '../../../../../types'
 
 const Full: NextPage<types.FullPage> = (props) => {
     return (

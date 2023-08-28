@@ -1,14 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import type { NextPage } from 'next'
 import { useEffect, useRef, useState } from 'react'
-import { useStore } from '../../../store'
+import { useStore } from '../../../../store'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import { RealtimeClient } from '@supabase/realtime-js'
+import { User } from '@supabase/supabase-js';
 
-import * as types from '../../../types'
-import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion, supabase, getSession } from '../../../actions'
+import * as types from '../../../../types'
+import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion, supabase, getSession } from '../../../../actions'
 
 import { FiChevronUp, FiTrash, FiCheck } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
@@ -28,23 +29,28 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   const { dispatch }: types.Dispatch = useStore()
   const questionRef = useRef<HTMLTextAreaElement>(null)
   const authorRef = useRef<HTMLInputElement>(null)
-  const user = getUser()
   const [requireAuth, setRequireAuth] = useState<boolean>(false)
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     async function getVotes() {
       const questionVotes = await getQuestionVotes()
       dispatch({ type: 'GET_QUESTION_VOTES', value: questionVotes.votes })
     }
+    
 
-    async function getAdmin() {
-      const admin = await getIsAdmin()
-      dispatch({ type: 'SET_ADMIN', value: admin.success })
+    async function getSession() {
+      const supabaseUser = await getUser()
+      if(supabaseUser) {
+        setUser(supabaseUser)
+        const admin = await getIsAdmin()
+        if(admin) {
+          dispatch({ type: 'SET_ADMIN', value: admin.success })
+        }
+      }
     }
 
-    if(user) {
-      getAdmin()
-    }
+    getSession()
     getVotes()
   
     if(props.error) {
@@ -59,30 +65,33 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
 
     return(() => {
       async() => {
-        await supabase.removeAllSubscriptions()
+        await supabase.removeAllChannels()
         await socket.disconnect()
       }
     })
   }, [])
 
   const createSubscription = () => {
-    channel = socket.channel('realtime:public:questions', { user_token: process.env.SUPABASE_PUBLIC_KEY })
-    channel.on('INSERT', (e: any) => dispatch({ type: 'STORE_QUESTION', value: {
-      id: e.record.id,
-      sessionSlug: e.record.sessionSlug,
-      author: e.record.author,
-      content: e.record.content,
-      created_at: e.record.created_at,
-      userId: e.record.userId,
-      answered: e.record.answered,
-      votes: e.record.votes
+    channel = socket.channel('realtime:public:questions')
+    channel.on('postgres_changes', { event: 'INSERT', schema: 'public'}, (e: any) => dispatch({ type: 'STORE_QUESTION', value: {
+      id: e.new.id,
+      sessionSlug: e.new.sessionSlug,
+      author: e.new.author,
+      content: e.new.content,
+      created_at: e.new.created_at,
+      userId: e.new.userId,
+      answered: e.new.answered,
+      votes: e.new.votes
     }}))
-    channel.on('UPDATE', (e: any) => dispatch({ type: 'UPDATE_QUESTION', value: e.record }))
+    channel.on('postgres_changes', { event: 'UPDATE', schema: 'public'}, (e: any) => dispatch({ type: 'UPDATE_QUESTION', value: e.new }))
     channel
-      .subscribe()
-      .receive('ok', () => console.log('Connecting'))
-      .receive('error', () => console.log('Failed'))
-      .receive('timeout', () => console.log('Waiting...'))
+    .subscribe(status => {
+      if (status === 'SUBSCRIBED') {
+          console.log('Connected')
+      } else {
+          console.log('Connecting...')
+      }
+    });
   }
 
   if(!session) {
@@ -112,7 +121,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
     if(response.error) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
     } else {
-      dispatch({ type: 'STORE_QUESTION_VOTE', value: response.question })
+      dispatch({ type: 'STORE_QUESTION_VOTE', value: response.question[0] })
     }
   }
 
@@ -151,7 +160,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       return (
         <div className="w-full mt-4 text-center">
           <h2 className="text-2xl">Q&A Starts</h2>
-          <p className="text-3xl">{dayjs(session.start_at).format('DD/MM/YYYY HH:mm')}</p>
+          <p className="text-3xl">{dayjs(session.start_at).format('DD/MM/YYYY')}</p>
         </div>
       )
     } else if (currentTime > endTime) {
@@ -190,9 +199,9 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       <header className="w-full flex flex-col justify-center items-center">
           <div className="flex flex-col justify-center max-w-screen-sm items-center w-full pt-8 pb-6">
               <h1 className="text-slate-700 text-2xl text-center">{session.title}</h1>
-              <div className="flex justify-between w-full px-2 text-slate-700">
-                <span>{session.speaker}</span>
-                <span>Ends: {dayjs(session.end_at).format('HH:mm')}</span>
+              <div className="flex justify-center w-full px-2 text-slate-700 text-center">
+                {session.speaker}
+                {/*<span>Ends: {dayjs(session.end_at).format('DD/MM/YYYY')}</span>*/}
               </div>
               {renderInput()}
           </div>

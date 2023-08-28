@@ -42,28 +42,28 @@ export default async function handler(
     }
 
     const question = await getQuestion(id)
-    if(question.error) {
+    if(question.error || !question.data) {
         return res.status(500).json({
-            error: question.error
+            error: `Cannot fetch question ${question.error}`
         })
     }
 
-    const session = await getSession(question.sessionSlug)
-    if(session.error) {
+    const session = await getSession(question.data[0].sessionSlug)
+    if(session.error || !session.data) {
         return res.status(500).json({
-            error: session.error
+            error: `Cannot fetch session ${session.error}`
         })
     }
 
-    const event = await getEvent(session.eventSlug)
-    if(event.error) {
+    const event = await getEvent(session.data[0].eventSlug)
+    if(event.error || !event.data) {
         return res.status(500).json({
-            error: event.error
+            error: `Unable to fetch event: ${event.error}` 
         })
     }
 
     let userId = null
-    if(event.requireAuth || req.headers.authorization) {
+    if(event.data.requireAuth || req.headers.authorization) {
         if(!req.headers.authorization) {
             return res.status(403).json({
                 error: 'Missing authorization token'
@@ -92,15 +92,15 @@ export default async function handler(
 
         userId = user.user.id
 
-        const checkVote = await getQuestionVote(question.id, userId);
-        if(checkVote && checkVote.length !== 0) {
+        const checkVote = await getQuestionVote(question.data[0].id, userId);
+        if(checkVote) {
             return res.status(401).json({
                 error: 'You have already voted.'
             })
         }
     }
 
-    if(question.votes >= 100) {
+    if(question.data[0].votes >= 100) {
         return res.status(403).json({
             error: 'Question has reached maximum votes'
         })
@@ -109,18 +109,20 @@ export default async function handler(
     const questionData = await storeQuestionVote(id, userId)
     if(questionData.error) {
         return res.status(403).json({
-            error: questionData.error
+            error: `Cannot store question ${questionData.error}`
         })
     }
 
     const updateData = await updateQuestionVote(id)
-    if(updateData.error) {
+    if(updateData.error || updateData.updateError || !updateData.updateData) {
         return res.status(403).json({
-            error: questionData.error
+            error: `Cannot update vote ${updateData.error}`
         })
     }
 
+    const responseData: unknown = updateData.updateData
+
     return res.status(200).json({
-        question: updateData
+        question: responseData as QuestionType
     })
 }
