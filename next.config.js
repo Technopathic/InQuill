@@ -15,7 +15,7 @@ const env = {
   "APP_IMAGE_WIDTH": "1200",
   "APP_IMAGE_HEIGHT": "630",
   "APP_SITE_NAME": "IGDA Q&A",
-  "API_URL": "http://qanda.igda.fi/api",
+  "API_URL": "https://qanda.igda.fi/api",
 }
 
 const nextConfig = {
