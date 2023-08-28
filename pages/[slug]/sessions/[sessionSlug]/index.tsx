@@ -21,7 +21,7 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault('Europe/Helsinki');
 
 const REALTIME_URL = 'wss://qepbbrribkrkypytwssf.supabase.co/realtime/v1'
-const socket = new RealtimeClient(REALTIME_URL,  { params: { apikey: process.env.SUPABASE_PUBLIC_KEY || '' }})
+const socket = new RealtimeClient(REALTIME_URL,  { params: { apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '' }})
 
 let channel = null
 
