@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next'
 import * as types from '../../../../types'
 import QRCode from "react-qr-code"

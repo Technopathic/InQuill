@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next'
 import { useEffect, useRef, useState } from 'react'
 import { useStore } from '../../../../store'
