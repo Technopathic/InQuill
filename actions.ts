@@ -217,8 +217,7 @@ export const storeCheckin = async(eventSlug: string, qrCode: string) => {
 
     const data = await axios({
         method: 'POST',
-        //url: `${process.env.API_URL}/postCheckIn` || '',
-        url: `${process.env.API_URL}/api/postCheckIn`,
+        url: `${process.env.API_URL}/postCheckIn`,
         data: JSON.stringify({
             eventSlug,
             qrCode
@@ -238,8 +237,7 @@ export const storeCheckinManual = async(eventSlug: string, firstName: string, la
 
     const data = await axios({
         method: 'POST',
-        //url: `${process.env.API_URL}/postCheckIn` || '',
-        url: `${process.env.API_URL}/api/postCheckinManual`,
+        url: `${process.env.API_URL}/postCheckinManual`,
         data: JSON.stringify({
             eventSlug,
             firstName,
@@ -261,8 +259,7 @@ export const updateSendInfo = async(eventSlug: string, email: string, sendInfo: 
 
     const data = await axios({
         method: 'POST',
-        //url: `${process.env.API_URL}/postCheckIn` || '',
-        url: `${process.env.API_URL}/api/postSendInfo`,
+        url: `${process.env.API_URL}/postSendInfo`,
         data: JSON.stringify({
             eventSlug,
             email,
