@@ -97,24 +97,25 @@ export default async function handler(
         const user = await getUser(req.headers.authorization)
         if(user.error) {
             return res.status(403).json({
-                error: user.error
+                error: `Unable to get User ${user.error}`
             })
         }
 
-        if(!user.user) {
+        //Refactor this later
+        if(!user.user.user) {
             return res.status(404).json({
                 error: 'User not found.'
             })
         }
 
-        const checkBan = await isBanned(user.user.id)
+        const checkBan = await isBanned(user.user.user.id)
         if(checkBan) {
             return res.status(403).json({
                 error: 'You cannot post a question.'
             })
         }
 
-        userId = user.user.id
+        userId = user.user.user.id
     }
 
 

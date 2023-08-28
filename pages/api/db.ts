@@ -43,8 +43,12 @@ export const storeQuestionVote = async(questionId: number, userId: string | null
 
 export const updateQuestionVote = async(questionId: number) => {
     const { data, error } = await supabase.from('questions').select('id, votes').eq('id', questionId).eq('archived', false)
-    const { data: updateData, error: updateError } = await supabase.from('questions').update({ votes: data[0].votes + 1 }).match({ id: data[0].id }).select()
-    return { updateData, error, updateError }
+    if(data) {
+        const { data: updateData, error: updateError } = await supabase.from('questions').update({ votes: data[0].votes + 1 }).match({ id: data[0].id }).select()
+        return { updateData, error, updateError }
+    }
+
+    return { error }
 }
 
 export const deleteQuestion = async(questionId: number) => {
@@ -64,7 +68,7 @@ export const answerQuestion = async(questionId: number) => {
     }
 
     const { data: updateData, error: updateError } = await supabase.from('questions').update({ answered: true }).match({ id: data[0].id })
-    if(updateError) {
+    if(!updateData || updateError) {
         return { error: `Unable to update question votes: ${updateError}` }
     }
 
@@ -95,12 +99,12 @@ export const isAdmin = async(userId: string) => {
 }
 
 export const getUser = async(token: string) => {
-    const { data: user, error } = await supabase.auth.api.getUser(token)
-    return { user, error }
+    const { data, error } = await supabase.auth.getUser(token)
+    return { user: data, error }
 }
 
 export const setAuth = async(req: NextApiRequest, res: NextApiResponse) => {
-    supabase.auth.api.setAuthCookie(req, res)
+    //supabase.auth.api.setAuthCookie(req, res)
 }
 
 export const getCheckin = async(email: string, eventId: number) => {
