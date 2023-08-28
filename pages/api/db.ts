@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 const supabase = createClient(process.env.SUPABASE_URL || '', process.env.SUPABASE_KEY || '')
 import * as types from '../../types'
 
-export const getEvents = async () => await supabase.from('events').select('id, title, slug').eq('archived', false)
+export const getEvents = async () => await supabase.from('events').select('id, title, slug, start_at, end_at').eq('archived', false)
 
 export const getEvent = async(slug: string) => {
     const { data, error } = await supabase.from('events').select('id, title, slug, eventbriteId, start_at, end_at, requireAuth').eq('slug', slug).eq('archived', false).single()

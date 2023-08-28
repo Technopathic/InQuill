@@ -45,13 +45,14 @@ export default async function handler(
         })
     }
 
-    if(!user.user) {
+    //Refactor later
+    if(!user.user.user) {
         return res.status(200).json({
             votes
         })
     }
 
-    const { data, error } = await getQuestionVotes(user.user.id)
+    const { data, error } = await getQuestionVotes(user.user.user.id)
     if(data) {
         for (const vote of data) {
             votes.push(vote.questionId)

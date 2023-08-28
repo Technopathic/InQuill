@@ -34,7 +34,7 @@ export default async function handler(
     }
 
     const session = await getSession(sessionSlug);
-    if (session.error) {
+    if (!session.data || session.error) {
         return res.status(500).json({
             session: null,
             questions: [],
@@ -43,8 +43,8 @@ export default async function handler(
         })
     }
 
-    const event = await getEvent(session.eventSlug);
-    if(event.error) {
+    const event = await getEvent(session.data[0].eventSlug);
+    if(!event.data || event.error) {
         return res.status(500).json({
             session: null,
             questions: [],
@@ -53,12 +53,12 @@ export default async function handler(
         })
     }
 
-    const { data, error }= await getQuestions(session.slug);
+    const { data, error }= await getQuestions(session.data[0].slug);
 
     return res.status(200).json({
-        session,
+        session: session.data[0],
         questions: data || [],
         error,
-        requireAuth: event.requireAuth
+        requireAuth: event.data.requireAuth
     })
 }

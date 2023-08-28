@@ -45,13 +45,14 @@ export default async function handler(
         })
     }
 
-    if(!user.user) {
+    //Refactor later
+    if(!user.user.user) {
         return res.status(200).json({
             success: false
         })
     }
 
-    const admin = await isAdmin(user.user.id);
+    const admin = await isAdmin(user.user.user.id);
 
     return res.status(200).json({
         success: admin
