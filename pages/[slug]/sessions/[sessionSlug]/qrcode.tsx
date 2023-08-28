@@ -23,7 +23,7 @@ const SessionQRCode: NextPage<types.QRPage> = (props) => {
                     <QRCode
                         size={256}
                         style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                        value={`/${props.event.slug}/sessions/${props.session.slug}`} 
+                        value={`${process.env.APP_URL}/${props.event.slug}/sessions/${props.session.slug}`} 
                     />
                 </div>
                 <h3 className="mt-8 text-white text-3xl">{props.session.speaker}</h3>

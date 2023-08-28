@@ -97,7 +97,7 @@ const Sessions: NextPage<types.SessionsPage> = (props) => {
                       <QRCode
                         size={256}
                         style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                        value={`/${slug}/sessions/${session.slug}`} 
+                        value={`${process.env.APP_URL}/${slug}/sessions/${session.slug}`} 
                       />
                     </a>
                   </Link>
