@@ -164,7 +164,7 @@ const Checkin: NextPage<types.EventPage> = (props) => {
         <section className={`text-7xl siteTitle`}>{props.event.title}</section>
         {view === 'default' && (
           <section className="flex flex-col w-full max-w-md items-center mt-4">
-            <div className="w-full max-w-screen-sm my-8 flex">
+            {/*<div className="w-full max-w-screen-sm my-8 flex">
               <div className="bg-white flex items-center justify-center rounded-l-xl pl-4 pr-2" onClick={() => searchInputRef.current?.focus()}><FiSearch size={28} color='#AAAAAA' /></div>
               <input className="w-full h-12 pr-4 pl-2" type="text" placeholder="Search for your name or email" ref={searchInputRef} />
               <div className="flex items-center justify-center rounded-r-xl px-3 bg-slate-700 transition-all hover:bg-slate-600" onClick={() => searchInputRef.current?.focus()}><FiArrowRight size={28} color='#EEEEEE' /></div>
@@ -173,7 +173,7 @@ const Checkin: NextPage<types.EventPage> = (props) => {
               <div className="w-full h-0.5 bg-slate-700" />
               <h4 className="text-4xl mx-6">OR</h4>
               <div className="w-full h-0.5 bg-slate-700" />
-            </div>
+        </div>*/}
             <div className={`w-96 rounded-xl overflow-hidden ${showScan ? 'h-96' : 'h-0'}`} id="reader"></div>
 
             {!showScan &&
