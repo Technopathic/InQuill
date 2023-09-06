@@ -178,11 +178,11 @@ const Checkin: NextPage<types.EventPage> = (props) => {
 
             {!showScan &&
               <div className="w-full mt-8 flex justify-center">
-                <button className="bg-slate-700 rounded-xl px-8 py-4 text-white hover:bg-slate-600 transition-all" onClick={() => setupScan()}>Check-in with your Ticket's QR code</button>
+                <button className="bg-slate-700 text-xl rounded-xl px-8 py-4 text-white hover:bg-slate-600 transition-all" onClick={() => setupScan()}>Check-in with your Ticket's QR code</button>
               </div>
             }
             <div className="w-full mt-8 flex justify-center">
-              <button className="bg-slate-700 rounded-xl px-8 py-4 text-white hover:bg-slate-600 transition-all" onClick={() => setView('signup')}>Check-in without a Ticket</button>
+              <button className="bg-slate-700 text-xl rounded-xl px-8 py-4 text-white hover:bg-slate-600 transition-all" onClick={() => setView('signup')}>Check-in without a Ticket</button>
             </div>
           </section>
         )}
@@ -224,15 +224,15 @@ const Checkin: NextPage<types.EventPage> = (props) => {
             <p className="mt-6 text-slate-700 text-xl">Check-in without a Ticket</p>
             <article className="mt-12 w-full">
               <label className="text-slate-700 text-xl ml-2">First Name</label>
-              <input type="text" className="w-full h-12 px-2 text-2xl rounded-xl" placeholder="First Name" ref={firstNameInputRef} />
+              <input type="text" className="w-full h-12 px-2 text-2xl rounded-xl text-slate-800" placeholder="First Name" ref={firstNameInputRef} />
             </article>
             <article className="mt-8 w-full">
               <label className="text-slate-700 text-xl ml-2">Last Name</label>
-              <input type="text" className="w-full h-12 px-2 text-2xl rounded-xl" placeholder="Last Name" ref={lastNameInputRef} />
+              <input type="text" className="w-full h-12 px-2 text-2xl rounded-xl text-slate-800" placeholder="Last Name" ref={lastNameInputRef} />
             </article>
             <article className="mt-8 w-full">
               <label className="text-slate-700 text-xl ml-2">E-mail</label>
-              <input type="text" className="w-full h-12 px-2 text-2xl rounded-xl" placeholder="E-mail" ref={emailInputRef} />
+              <input type="text" className="w-full h-12 px-2 text-2xl rounded-xl text-slate-800" placeholder="E-mail" ref={emailInputRef} />
             </article>
 
             <button className="bg-slate-700 rounded-xl px-8 py-4 text-white hover:bg-slate-600 transition-all w-full mt-8" onClick={checkinManual}>Confirm</button>
