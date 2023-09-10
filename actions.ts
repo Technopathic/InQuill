@@ -32,7 +32,7 @@ export const getEvent = async(slug: string): Promise<({ data: types.EventType | 
 }
 
 export const getSessions = async(slug: string): Promise<({ data: types.SessionType[], error: string | null })> => {
-    const { data, error } = await supabase.from('sessions').select('id, eventSlug, title, slug, description, speaker, start_at').eq('eventSlug', slug).eq('archived', false).order('start_at', { ascending: true })
+    const { data, error } = await supabase.from('sessions').select('id, eventSlug, title, slug, description, speaker, start_at').eq('eventSlug', slug).eq('archived', false).order('id', { ascending: true })
     return {
         data: data || [],
         error: error ? error.message : null
