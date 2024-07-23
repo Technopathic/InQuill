@@ -19,7 +19,7 @@ const SessionQRCode: NextPage<types.QRPage> = (props) => {
             </div>
             <div className="flex flex-col justify-center items-center">
                 <h2 className="text-6xl font-bold mb-4 text-white">Q&A</h2>
-                <div className="h-96 w-96 border-8 p-3 border-white">
+                <div className="h-96 w-96 p-3">
                     <QRCode
                         size={256}
                         style={{ height: "auto", maxWidth: "100%", width: "100%" }}
