@@ -42,7 +42,7 @@ export default async function handler(
         })
     }
 
-    const attendeeId = qrCode.slice(10, 21)
+    const attendeeId = qrCode.slice(11, 22)
 
     const event = await getEvent(eventSlug)
     if(event.error || !event.data) {
