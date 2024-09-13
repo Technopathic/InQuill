@@ -64,7 +64,7 @@ const Sessions: NextPage<types.SessionsPage> = (props) => {
       <main className="flex flex-col flex-grow items-center pb-8 mx-4">
         <section className="w-full max-w-screen-sm">
           {searchResults.length > 0 && searchResults.map((session, i) => (
-            <article key={i} className="flex flex-col bg-white rounded-xl mt-8 text-slate-700">
+            <article key={i} className="flex flex-col bg-white rounded-xl mt-8 text-slate-700 relative">
               <div className="p-6 flex flex-col">
                 <div className="flex justify-between">
                   <div>
