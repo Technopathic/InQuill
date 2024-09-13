@@ -13,7 +13,7 @@ const SessionQRCode: NextPage<types.QRPage> = (props) => {
                     <img className="h-20" src="/IGDALogo.png" alt="IGDA LOGO" />
                 </div>
                 <div className="flex flex-col mt-2">
-                    <h1 className="text-4xl font-bold pinkText">{props.event.title}</h1>
+                    <h1 className="text-4xl font-bold text-white">{props.event.title}</h1>
                     <p className="text-2xl text-white">Helsinki {dayjs(props.event.start_at).format('DD.MM.YYYY')}</p>
                 </div>
             </div>

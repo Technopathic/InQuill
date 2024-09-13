@@ -71,7 +71,15 @@ const Sessions: NextPage<types.SessionsPage> = (props) => {
                     <span className="text-sm">Q&A - {dayjs(session.start_at).format('DD/MM/YYYY')}</span>
                     <p className="text-xl font-bold my-1">{session.title}</p>
                   </div>
-                  <div>QR Code</div>
+                  <Link href={`/${slug}/sessions/${session.slug}/qrcode`}>
+                    <a className="absolute right-2 top-2 border border-solid border-slate-700 h-10 w-10 rounded-md p-1">
+                      <QRCode
+                        size={256}
+                        style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                        value={`${process.env.APP_URL}/${slug}/sessions/${session.slug}`} 
+                      />
+                    </a>
+                  </Link>
                 </div>
                 <span>{session.speaker}</span>
               </div>
