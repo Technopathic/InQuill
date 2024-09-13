@@ -70,7 +70,7 @@ export default async function handler(
     }
 
     const isCheckedin = await getCheckin(eventbriteData.profile.email, event.data.id);
-    if(!isCheckedin.data) {
+    if(!isCheckedin.data || isCheckedin.data && event.data.multiCheckin) {
         const checkin = await storeCheckin(checkinData);
         if(checkin.error) {
             return res.status(500).json({

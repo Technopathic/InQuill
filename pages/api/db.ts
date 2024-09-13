@@ -6,7 +6,7 @@ import * as types from '../../types'
 export const getEvents = async () => await supabase.from('events').select('id, title, slug, start_at, end_at').eq('archived', false)
 
 export const getEvent = async(slug: string) => {
-    const { data, error } = await supabase.from('events').select('id, title, slug, eventbriteId, start_at, end_at, requireAuth').eq('slug', slug).eq('archived', false).single()
+    const { data, error } = await supabase.from('events').select('id, title, slug, eventbriteId, multiCheckin, start_at, end_at, requireAuth').eq('slug', slug).eq('archived', false).single()
     return { data, error }
 }
 
