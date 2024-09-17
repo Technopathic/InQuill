@@ -128,3 +128,10 @@ export const updateCheckinIGDAInfo = async(id: number, sendIGDAInfo: boolean) =>
         error
     }
 }
+
+export const storeKiosk = async(kioskData: types.KioskData) => {
+    const { error } =  await supabase.from('qs-kiosk').insert(kioskData)
+    return {
+        error
+    }
+}

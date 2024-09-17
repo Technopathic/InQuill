@@ -124,3 +124,10 @@ export type FullPage = {
     question: QuestionType;
     error: string;
 }
+
+export interface KioskData {
+    name: string;
+    email: string;
+    tools: string | null;
+    canContact: boolean;
+}
