@@ -128,6 +128,7 @@ export type FullPage = {
 export interface KioskData {
     name: string;
     email: string;
+    company: string | null;
     tools: string | null;
     canContact: boolean;
 }

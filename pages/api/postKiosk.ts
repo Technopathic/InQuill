@@ -33,7 +33,7 @@ export default async function handler(
         return res.status(401).json({ error: 'Not Allowed' })
     }
 
-    const { name, email, tools, canContact } = req.body
+    const { name, email, company, tools, canContact } = req.body
 
     if(!name|| typeof name !== 'string') {
         return res.status(401).json({
@@ -50,6 +50,7 @@ export default async function handler(
     const kioskData: types.KioskData = {
         name,
         email,
+        company,
         tools,
         canContact
     }
