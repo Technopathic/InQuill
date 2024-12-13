@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getCard } from './db'
+import { getCard, updateCard } from './db'
 
 type ResponseOptions = {
     body: 'OK';
@@ -49,6 +49,8 @@ export default async function handler(
             error: error,
         })
     }
+
+    await updateCard(data.id, data.visits + 1)
 
     return res.status(200).json({card: {
         id: data.id,
