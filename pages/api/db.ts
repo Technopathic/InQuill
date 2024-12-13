@@ -148,8 +148,8 @@ export const storeCard = async(cardData: types.Card) => {
     }
 }
 
-export const updateCard = async(slug: string, visits: number) => {
-    const { error } = await supabase.from('checkins').update({ visits }).match({ slug })
+export const updateCard = async(id: number, visits: number) => {
+    const { error } = await supabase.from('checkins').update({ visits }).match({ id })
     return {
         error
     }

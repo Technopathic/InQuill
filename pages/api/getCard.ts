@@ -50,7 +50,7 @@ export default async function handler(
         })
     }
 
-    await updateCard(data.slug, data.visits + 1)
+    await updateCard(data.id, data.visits + 1)
 
     return res.status(200).json({card: {
         id: data.id,
