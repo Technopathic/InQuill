@@ -137,7 +137,7 @@ export const storeKiosk = async(kioskData: types.KioskData) => {
 }
 
 export const getCard = async(slug: string) => {
-    const { data, error } = await supabase.from('qs-greetings').select('id, color, vfx, slotOne, slotTwo, slotThree, slotFour, cardText, slug').eq('slug', slug);
+    const { data, error } = await supabase.from('qs-greetings').select('id, color, vfx, slotOne, slotTwo, slotThree, slotFour, cardText, slug').eq('slug', slug).single();
     return { data, error }
 }
 
