@@ -135,3 +135,10 @@ export const storeKiosk = async(kioskData: types.KioskData) => {
         error
     }
 }
+
+export const storeCard = async(cardData: types.Card) => {
+    const { error } =  await supabase.from('qs-greetings').insert(cardData);
+    return {
+        error
+    }
+}

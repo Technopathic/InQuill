@@ -132,3 +132,13 @@ export interface KioskData {
     tools: string | null;
     canContact: boolean;
 }
+
+export interface Card {
+    color: string;
+    vfx: string;
+    slotOne: string;
+    slotTwo: string;
+    slotThree: string;
+    slotFour: string;
+    cardText: string;
+}
