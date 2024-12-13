@@ -141,4 +141,5 @@ export interface Card {
     slotThree: string;
     slotFour: string;
     cardText: string;
+    slug: string;
 }

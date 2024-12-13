@@ -136,6 +136,11 @@ export const storeKiosk = async(kioskData: types.KioskData) => {
     }
 }
 
+export const getCard = async(slug: string) => {
+    const { data, error } = await supabase.from('qs-greetings').select('id, color, vfx, slotOne, slotTwo, slotThree, slotFour, cardText, slug').eq('slug', slug);
+    return { data, error }
+}
+
 export const storeCard = async(cardData: types.Card) => {
     const { error } =  await supabase.from('qs-greetings').insert(cardData);
     return {

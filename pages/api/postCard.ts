@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { storeCard } from './db'
 import * as types from '../../types'
+import { nanoid } from 'nanoid'
 
 type ResponseOptions = {
     body: 'OK';
@@ -35,6 +36,8 @@ export default async function handler(
 
     const { color, vfx, slotOne, slotTwo, slotThree, slotFour, cardText } = req.body;
 
+    const slug = nanoid(8)
+
     const cardData: types.Card = {
         color,
         vfx,
@@ -42,7 +45,8 @@ export default async function handler(
         slotTwo,
         slotThree,
         slotFour,
-        cardText
+        cardText,
+        slug
     };
 
     const card = await storeCard(cardData);
