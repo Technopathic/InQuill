@@ -137,12 +137,19 @@ export const storeKiosk = async(kioskData: types.KioskData) => {
 }
 
 export const getCard = async(slug: string) => {
-    const { data, error } = await supabase.from('qs-greetings').select('id, color, vfx, slotOne, slotTwo, slotThree, slotFour, cardText, slug').eq('slug', slug).single();
+    const { data, error } = await supabase.from('qs-greetings').select('id, color, vfx, slotOne, slotTwo, slotThree, slotFour, cardText, slug, visits').eq('slug', slug).single();
     return { data, error }
 }
 
 export const storeCard = async(cardData: types.Card) => {
     const { error } =  await supabase.from('qs-greetings').insert(cardData);
+    return {
+        error
+    }
+}
+
+export const updateCard = async(slug: string, visits: number) => {
+    const { error } = await supabase.from('checkins').update({ visits }).match({ slug })
     return {
         error
     }

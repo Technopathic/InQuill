@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getCard } from './db'
+import { getCard, updateCard } from './db'
 
 type ResponseOptions = {
     body: 'OK';
@@ -50,5 +50,17 @@ export default async function handler(
         })
     }
 
-    return res.status(200).json({card: data, error: null});
+    await updateCard(data.slug, data.visits + 1)
+
+    return res.status(200).json({card: {
+        id: data.id,
+        color: data.color,
+        vfx: data.vfx,
+        slotOne: data.slotOne,
+        slotTwo: data.slotTwo,
+        slotThree: data.slotThree,
+        slotFour: data.slotFour,
+        cardText: data.cardText,
+        slug: data.slug
+    }, error: null});
 }
