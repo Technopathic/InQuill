@@ -176,11 +176,11 @@ const Checkin: NextPage<types.EventPage> = (props) => {
         </div>*/}
             <div className={`w-96 rounded-xl overflow-hidden ${showScan ? 'h-96' : 'h-0'}`} id="reader"></div>
 
-            {!showScan &&
+            {/*!showScan &&
               <div className="w-full mt-8 flex justify-center">
                 <button className="bg-slate-700 text-xl rounded-xl px-8 py-4 text-white hover:bg-slate-600 transition-all" onClick={() => setupScan()}>Check-in with your Ticket's QR code</button>
               </div>
-            }
+            */}
             <div className="w-full mt-8 flex justify-center">
               <button className="bg-slate-700 text-xl rounded-xl px-8 py-4 text-white hover:bg-slate-600 transition-all" onClick={() => setView('signup')}>Check-in without a Ticket</button>
             </div>
