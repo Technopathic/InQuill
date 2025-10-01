@@ -10,7 +10,7 @@ const Event: NextPage<types.EventPage> = (props) => {
       <section>
         <h1 className={`text-8xl siteTitle`}>{props.event.title}</h1>
       </section>
-      <section className="grid grid-cols-2 gap-8 w-full max-w-md mt-4">
+      <section className="grid grid-cols-1 gap-8 w-full max-w-md mt-4">
         {/*<Link href={`${props.event.slug}/check-in`} passHref>
           <a className="bg-slate-700 text-white text-2xl text-center rounded-lg py-2">
             Check-In
