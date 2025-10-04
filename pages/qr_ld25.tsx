@@ -5,9 +5,6 @@ const QRCodeLD25 = () => {
     return (
         <main className="flex flex-col justify-between h-screen bg-white">
             <div className="flex pl-8 pt-8 pr-8 items-center">
-                <div className="mr-8">
-                    <img className="h-20" src="/IGDALogo.png" alt="IGDA LOGO" />
-                </div>
                 <div className="flex flex-col mt-2">
                     <h1 className="text-4xl font-bold text-black">Leadership Day 2025 by IGDA Finland</h1>
                     <p className="text-2xl text-black">Helsinki City Hall 06.10.2025</p>
