@@ -6,11 +6,11 @@ import { useStore } from '../../../../store'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import { RealtimeClient } from '@supabase/realtime-js'
+import { RealtimeClient, RealtimeChannel } from '@supabase/realtime-js'
 import { User } from '@supabase/supabase-js';
 
 import * as types from '../../../../types'
-import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion, supabase, getSession } from '../../../../actions'
+import { getQuestions, storeQuestion, storeQuestionVote, signIn, getUser, getIsAdmin, getQuestionVotes, deleteQuestion, answerQuestion, getSession } from '../../../../actions'
 
 import { FiChevronUp, FiTrash, FiCheck } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
@@ -22,8 +22,7 @@ dayjs.tz.setDefault('Europe/Helsinki');
 
 const REALTIME_URL = 'wss://qepbbrribkrkypytwssf.supabase.co/realtime/v1'
 const socket = new RealtimeClient(REALTIME_URL,  { params: { apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '' }})
-
-let channel = null
+const QUESTIONS_TOPIC = 'public:questions'
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
   const { session, questions, votes, isAdmin, sortQuestions }: types.State = useStore()
@@ -61,19 +60,33 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       setRequireAuth(props.requireAuth)
     }
 
-    createSubscription()
+    let channel: RealtimeChannel | null = null
+    let unmounted = false
+
+    async function subscribe() {
+      // realtime-js reuses a channel with the same topic, so wait for the previous page's channel to close first
+      const staleChannel = socket.getChannels().find(c => c.topic === `realtime:${QUESTIONS_TOPIC}`)
+      if(staleChannel) {
+        await socket.removeChannel(staleChannel)
+      }
+      if(!unmounted) {
+        channel = createSubscription()
+      }
+    }
+
+    subscribe()
     socket.connect()
 
-    return(() => {
-      async() => {
-        await supabase.removeAllChannels()
-        await socket.disconnect()
+    return () => {
+      unmounted = true
+      if(channel) {
+        socket.removeChannel(channel)
       }
-    })
+    }
   }, [])
 
   const createSubscription = () => {
-    channel = socket.channel('realtime:public:questions')
+    const channel = socket.channel(QUESTIONS_TOPIC)
     channel.on('postgres_changes', { event: 'INSERT', schema: 'public'}, (e: any) => dispatch({ type: 'STORE_QUESTION', value: {
       id: e.new.id,
       sessionSlug: e.new.sessionSlug,
@@ -93,6 +106,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
           console.log('Connecting...')
       }
     });
+    return channel
   }
 
   if(!session) {
