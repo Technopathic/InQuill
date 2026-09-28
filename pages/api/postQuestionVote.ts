@@ -94,7 +94,7 @@ export default async function handler(
         userId = user.user.user.id
 
         const checkVote = await getQuestionVote(question.data[0].id, userId);
-        if(checkVote) {
+        if(checkVote.data) {
             return res.status(401).json({
                 error: 'You have already voted.'
             })

@@ -22,7 +22,7 @@ dayjs.tz.setDefault('Europe/Helsinki');
 
 const REALTIME_URL = 'wss://qepbbrribkrkypytwssf.supabase.co/realtime/v1'
 const socket = new RealtimeClient(REALTIME_URL,  { params: { apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '' }})
-const QUESTIONS_TOPIC = 'public:questions'
+const questionsTopic = (sessionSlug: string) => `public:questions:${sessionSlug}`
 
 const Questions: NextPage<types.QuestionsPage> = (props) => {
   const { session, questions, votes, isAdmin, sortQuestions }: types.State = useStore()
@@ -31,6 +31,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   const authorRef = useRef<HTMLInputElement>(null)
   const [requireAuth, setRequireAuth] = useState<boolean>(false)
   const [user, setUser] = useState<User | null>(null);
+  const pendingVotes = useRef<Set<number>>(new Set())
 
   useEffect(() => {
     async function getVotes() {
@@ -60,17 +61,22 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       setRequireAuth(props.requireAuth)
     }
 
+    if(!props.session) {
+      return
+    }
+
+    const sessionSlug = props.session.slug
     let channel: RealtimeChannel | null = null
     let unmounted = false
 
     async function subscribe() {
       // realtime-js reuses a channel with the same topic, so wait for the previous page's channel to close first
-      const staleChannel = socket.getChannels().find(c => c.topic === `realtime:${QUESTIONS_TOPIC}`)
+      const staleChannel = socket.getChannels().find(c => c.topic === `realtime:${questionsTopic(sessionSlug)}`)
       if(staleChannel) {
         await socket.removeChannel(staleChannel)
       }
       if(!unmounted) {
-        channel = createSubscription()
+        channel = createSubscription(sessionSlug)
       }
     }
 
@@ -85,9 +91,10 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
     }
   }, [])
 
-  const createSubscription = () => {
-    const channel = socket.channel(QUESTIONS_TOPIC)
-    channel.on('postgres_changes', { event: 'INSERT', schema: 'public'}, (e: any) => dispatch({ type: 'STORE_QUESTION', value: {
+  const createSubscription = (sessionSlug: string) => {
+    const channel = socket.channel(questionsTopic(sessionSlug))
+    const filter = `sessionSlug=eq.${sessionSlug}`
+    channel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'questions', filter }, (e: any) => dispatch({ type: 'STORE_QUESTION', value: {
       id: e.new.id,
       sessionSlug: e.new.sessionSlug,
       author: e.new.author,
@@ -97,7 +104,7 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
       answered: e.new.answered,
       votes: e.new.votes
     }}))
-    channel.on('postgres_changes', { event: 'UPDATE', schema: 'public'}, (e: any) => dispatch({ type: 'UPDATE_QUESTION', value: e.new }))
+    channel.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'questions', filter }, (e: any) => dispatch({ type: 'UPDATE_QUESTION', value: e.new }))
     channel
     .subscribe(status => {
       if (status === 'SUBSCRIBED') {
@@ -127,16 +134,26 @@ const Questions: NextPage<types.QuestionsPage> = (props) => {
   }
 
   const handleStoreQuestionVote = async(id: number) => {
+    // Ignore clicks while this question's vote request is still in flight
+    if(pendingVotes.current.has(id)) {
+      return
+    }
+
     if(votes && votes.includes(id)) {
       dispatch({ type: 'SET_SNACK', value: { show: true, message: 'You have already voted.' }})
       return
     }
 
-    const response = await storeQuestionVote(id)
-    if(response.error) {
-      dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
-    } else {
-      dispatch({ type: 'STORE_QUESTION_VOTE', value: response.question[0] })
+    pendingVotes.current.add(id)
+    try {
+      const response = await storeQuestionVote(id)
+      if(response.error) {
+        dispatch({ type: 'SET_SNACK', value: { show: true, message: response.error }})
+      } else {
+        dispatch({ type: 'STORE_QUESTION_VOTE', value: response.question[0] })
+      }
+    } finally {
+      pendingVotes.current.delete(id)
     }
   }
 
