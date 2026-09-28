@@ -4,13 +4,14 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useCreateStore, Provider } from '../store'
 import { supabase, setAuthCookie } from '../actions'
+import { State } from '../types'
 
 import Footer from '../components/Footer'
 import Snack from '../components/Snack'
 
 import '../globals.css'
 
-const App = ({ Component, pageProps } : AppProps) => {
+const App = ({ Component, pageProps } : AppProps<{ state: State }>) => {
   const store = useCreateStore(pageProps.state);
 
   const router = useRouter()
